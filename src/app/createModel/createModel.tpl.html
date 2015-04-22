@@ -1,0 +1,28 @@
+<h1 style="margin-left:15px;">New Logical Model:</h1>
+<div class="col-md-12 row">
+    <div class="col-md-2">
+        <div>Select a Model to Load:</div>
+    </div>
+    <div class="col-md-2">
+        <select ng-model="modelToLoad">
+            <option>Please Select An Option</option>
+            <option ng-repeat="item in logicalModels" value="{{item}}">{{item}}</option>
+        </select>
+    </div>
+    <div class="col-md-1">
+        <button class="btn btn-primary" ng-click="loadModel()">Load</button>
+    </div>
+    <button class="btn btn-primary col-md-2" style="margin-right:10px;"ng-click="saveModel()">Save Logical Model</button>
+    <div class="col-md-2" ng-show="success">Model Successfully Saved.</div>
+    <button class="btn btn-primary col-md-2" style="margin-left:10px;" ng-click="generateMatrix()">Generate Matrix</button>
+</div>
+<div class="col-md-12 row">
+    <div class="col-md-6">
+        </br>
+        <textarea class="col-md-12" style="height:300px" id="jsonTextarea" ng-model="jsonString"></textarea>
+        <span class="red" ng-if="!wellFormed">JSON is invalid</span>
+    </div>
+    <div class="jsonView col-md-6">
+        <json child="jsonData" default-collapsed="false" type="object"></json>
+    </div>
+</div>
