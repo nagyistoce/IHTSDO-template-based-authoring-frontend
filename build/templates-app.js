@@ -36,6 +36,6 @@ angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($te
   $templateCache.put("matrix/matrix.tpl.html",
     "<h1 style=\"margin-left:15px;\">Matrix</h1>\n" +
     "<div class=\"col-md-12 row\">\n" +
-    "\n" +
+    "    \n" +
     "</div>");
 }]);

@@ -42,4 +42,7 @@ angular.module( 'templateBasedAuthoring.matrix', [
     MatrixService.getLogicalModel(sharedVariablesService.getTemplateName()).then(function(data) {
             $scope.model = data.data;
         });
+    $scope.parseModel = function(model) {
+        
+    };
 }]);

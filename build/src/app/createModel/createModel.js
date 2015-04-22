@@ -53,36 +53,7 @@ angular.module( 'templateBasedAuthoring.createModel', [
 .controller( 'CreateModelCtrl', ['$scope', '$filter', 'ModelService', 'sharedVariablesService', '$location', function createModelCtrl($scope, $filter, ModelService, sharedVariablesService, $location) {
     $scope.logicalModels = null;
     $scope.success = false;
-    $scope.jsonData = {
-//      "name" : "example-logical-model",
-//      "isARestrictions" : [ {
-//        "conceptId" : "71388002",
-//        "rangeRelationType" : "DESCENDANTS"
-//      } ],
-//      "attributeRestrictionGroups" : [ 
-//    [ {
-//        "typeConceptId" : "260686004",
-//        "rangeRelationType" : "SELF",
-//        "rangeConceptId" : "312251004"
-//      }, {
-//        "typeConceptId" : "405813007",
-//        "rangeRelationType" : "DESCENDANTS_AND_SELF",
-//        "rangeConceptId" : "442083009"
-//      } ], 
-//    [ {
-//        "typeConceptId" : "260686004",
-//        "rangeRelationType" : "SELF",
-//        "rangeConceptId" : "312251004"
-//      }, {
-//        "typeConceptId" : "405813007",
-//        "rangeRelationType" : "DESCENDANTS_AND_SELF",
-//        "rangeConceptId" : "442083009"
-//      }, {
-//        "typeConceptId" : "363703001",
-//        "rangeRelationType" : "DESCENDANTS",
-//        "rangeConceptId" : "429892002"
-//      } ] ]
-    };
+    $scope.jsonData = {};
 
     $scope.$watch('jsonData', function(json) {
         $scope.jsonString = $filter('json')(json);
