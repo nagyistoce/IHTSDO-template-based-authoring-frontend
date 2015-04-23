@@ -38,11 +38,53 @@ angular.module( 'templateBasedAuthoring.matrix', [
     };
 }])
 
-.controller( 'MatrixCtrl', ['$scope', '$filter', 'MatrixService', 'sharedVariablesService', function matrixCtrl($scope, $filter, MatrixService, sharedVariablesService) {
+.controller( 'MatrixCtrl', ['$scope', '$filter', 'MatrixService', 'sharedVariablesService', 'snowowlService', function matrixCtrl($scope, $filter, MatrixService, sharedVariablesService, snowowlService) {
+    $scope.headers = [];
+    $scope.parsedHeaders = [];
     MatrixService.getLogicalModel(sharedVariablesService.getTemplateName()).then(function(data) {
             $scope.model = data.data;
+            $scope.parseModel($scope.model);
         });
     $scope.parseModel = function(model) {
-        
+        for(var i = 0; i < model.attributeRestrictionGroups.length; i++)
+        {
+            for(var j = 0; j < model.attributeRestrictionGroups[i].length; j++)
+            {
+                $scope.headers.push(model.attributeRestrictionGroups[i][j].typeConceptId);
+            }
+        }
+        callServiceForEachItem();
+    };
+    function callServiceForEachItem() {
+      var promise;
+
+      angular.forEach($scope.headers, function(item) {
+        if (!promise) {
+          //First time through so just call the service
+          promise = $scope.getName(item);
+        } else {
+          //Chain each subsequent request
+          promise = promise.then(function() {
+
+            return $scope.getName(item);
+          });
+        }
+      });
+    }
+    $scope.getName = function(id){
+        snowowlService.getConceptName(id).then(function(data) {
+                    var index = $scope.headers.indexOf(id);
+                    $scope.headers[index] = data.data.preferredSynonym;
+                });
+    };
+    $scope.getConceptName = function(value){
+        return function(value) {
+        snowowlService.getConceptName(value).then(function(data) {
+                    return data.data.preferredSynonym;
+                });
+      };
+    };
+    $scope.assignName = function(header, data){
+        header = data;
     };
 }]);

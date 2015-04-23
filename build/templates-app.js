@@ -36,6 +36,35 @@ angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($te
   $templateCache.put("matrix/matrix.tpl.html",
     "<h1 style=\"margin-left:15px;\">Matrix</h1>\n" +
     "<div class=\"col-md-12 row\">\n" +
-    "    \n" +
+    "    <table class=\"table table-striped\">\n" +
+    "        <thead>\n" +
+    "            <tr>\n" +
+    "                <th>Parent Concept Id</th>\n" +
+    "                <th ng-repeat=\"(key, value) in headers\">{{value}}</th>\n" +
+    "            </tr>\n" +
+    "        </thead>\n" +
+    "        <tbody>\n" +
+    "            <tr>\n" +
+    "                <td></td>\n" +
+    "                <td ng-repeat=\"(key, value) in headers\"></td>\n" +
+    "            </tr>\n" +
+    "            <tr>\n" +
+    "                <td></td>\n" +
+    "                <td ng-repeat=\"(key, value) in headers\"></td>\n" +
+    "            </tr>\n" +
+    "            <tr>\n" +
+    "                <td></td>\n" +
+    "                <td ng-repeat=\"(key, value) in headers\"></td>\n" +
+    "            </tr>\n" +
+    "            <tr>\n" +
+    "                <td></td>\n" +
+    "                <td ng-repeat=\"(key, value) in headers\"></td>\n" +
+    "            </tr>\n" +
+    "            <tr>\n" +
+    "                <td></td>\n" +
+    "                <td ng-repeat=\"(key, value) in headers\"></td>\n" +
+    "            </tr>\n" +
+    "        </tbody>\n" +
+    "    </table>\n" +
     "</div>");
 }]);

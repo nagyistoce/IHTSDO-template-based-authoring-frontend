@@ -4,6 +4,8 @@ angular.module( 'templateBasedAuthoring', [
     'templateBasedAuthoring.createModel',
     'templateBasedAuthoring.matrix',
     'templateBasedAuthoring.sharedVariablesService',
+    'templateBasedAuthoring.snowowlService',
+    'templateBasedAuthoring.conceptNameFilter',
     'ui.router' 
 ])
 
