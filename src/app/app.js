@@ -22,7 +22,4 @@ angular.module( 'templateBasedAuthoring', [
       $scope.pageTitle = toState.data.pageTitle + ' | templateBasedAuthoring' ;
     }
   });
-})
-
-;
-
+});

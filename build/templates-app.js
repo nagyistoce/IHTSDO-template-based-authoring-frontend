@@ -36,6 +36,24 @@ angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($te
   $templateCache.put("matrix/matrix.tpl.html",
     "<h1 style=\"margin-left:15px;\">Matrix</h1>\n" +
     "<div class=\"col-md-12 row\">\n" +
+    "    <form id=\"upload\" onsubmit=\"init()\" method=\"POST\" enctype=\"multipart/form-data\">\n" +
+    "        <fieldset>\n" +
+    "            <legend>.TSV Upload</legend>\n" +
+    "            <input type=\"hidden\" id=\"MAX_FILE_SIZE\" name=\"MAX_FILE_SIZE\" value=\"300000\" />\n" +
+    "            <div>\n" +
+    "                <label for=\"fileselect\">Files to upload:</label>\n" +
+    "                <input type=\"file\" id=\"fileselect\" name=\"fileselect[]\" multiple=\"multiple\" />\n" +
+    "                <div id=\"filedrag\">or drop files here</div>\n" +
+    "            </div>\n" +
+    "            <div id=\"submitbutton\">\n" +
+    "                <button type=\"submit\">Upload Files</button>\n" +
+    "            </div>\n" +
+    "        </fieldset>\n" +
+    "    </form>\n" +
+    "    <div id=\"messages\">\n" +
+    "        <p>Status Messages</p>\n" +
+    "    </div>\n" +
+    "    \n" +
     "    <table class=\"table table-striped\">\n" +
     "        <thead>\n" +
     "            <tr>\n" +
