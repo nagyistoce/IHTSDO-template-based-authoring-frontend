@@ -111,14 +111,20 @@ angular.module( 'templateBasedAuthoring.matrix', [
 	}
 
 	function ParseFile(file) {
-
+        var reader = new FileReader();
+        
+        reader.onload = function(e) {
+            var results = $scope.tsvJSON(e.target.result);
+            console.log(results);
+        };
+        reader.readAsText(file);
+        
 		new Output(
 			"<p>File information: <strong>" + file.name +
 			"</strong> type: <strong>" + file.type +
 			"</strong> size: <strong>" + file.size +
 			"</strong> bytes</p>"
 		);
-
 	}
 	$scope.Init = function(){
 
@@ -139,6 +145,29 @@ angular.module( 'templateBasedAuthoring.matrix', [
 
 	};
 	if (window.File && window.FileList && window.FileReader) {
+        
 		$scope.Init();
 	}
+    $scope.tsvJSON = function(tsv){
+
+      var lines=tsv.split("\n");
+
+      var result = [];
+
+      var headers=lines[0].split("\t");
+
+      for(var i=1;i<lines.length;i++){
+
+          var obj = {};
+          var currentline=lines[i].split("\t");
+
+          for(var j=0;j<headers.length;j++){
+              obj[headers[j]] = currentline[j];
+          }
+
+          result.push(obj);
+
+      }
+      return JSON.stringify(result);
+    };
 }]);
