@@ -1,28 +1,59 @@
-<h1 style="margin-left:15px;">New Logical Model:</h1>
+<h2 style="margin-left:15px;">New Logical Model:</h2>
 <div class="col-md-12 row">
     <div class="col-md-2">
-        <div>Select a Model to Load:</div>
+        <div>Select a Logical Model to Load:</div>
     </div>
     <div class="col-md-2">
-        <select ng-model="modelToLoad">
+        <select ng-model="logicalModelToLoad">
             <option>Please Select An Option</option>
             <option ng-repeat="item in logicalModels" value="{{item}}">{{item}}</option>
         </select>
     </div>
     <div class="col-md-1">
-        <button class="btn btn-primary" ng-click="loadModel()">Load</button>
+        <button class="btn btn-primary" ng-click="loadLogicalModel()">Load</button>
     </div>
-    <button class="btn btn-primary col-md-2" style="margin-right:10px;"ng-click="saveModel()">Save Logical Model</button>
-    <div class="col-md-2" ng-show="success">Model Successfully Saved.</div>
-    <button class="btn btn-primary col-md-2" style="margin-left:10px;" ng-click="generateMatrix()">Generate Matrix</button>
+    <button class="btn btn-primary col-md-2" style="margin-right:10px;"ng-click="saveLogicalModel()">Save Logical Model</button>
+    <div class="col-md-2" ng-show="logicalSuccess">Logical Model Successfully Saved.</div>
 </div>
 <div class="col-md-12 row">
     <div class="col-md-6">
         </br>
-        <textarea class="col-md-12" style="height:300px" id="jsonTextarea" ng-model="jsonString"></textarea>
-        <span class="red" ng-if="!wellFormed">JSON is invalid</span>
+        <textarea class="col-md-12" style="height:300px" id="logicalJsonTextarea" ng-model="logicalJsonString"></textarea>
+        <span class="red" ng-if="!logicalWellFormed">JSON is invalid</span>
     </div>
     <div class="jsonView col-md-6">
-        <json child="jsonData" default-collapsed="false" type="object"></json>
+        <json child="logicalJsonData" default-collapsed="false" type="object"></json>
     </div>
 </div>
+<br/>
+<hr/>
+<br/>
+<h2 style="margin-left:15px;">New Lexical Model:</h2>
+<div class="col-md-12 row">
+    <div class="col-md-2">
+        <div>Select a Lexical Model to Load:</div>
+    </div>
+    <div class="col-md-2">
+        <select ng-model="lexicalModelToLoad">
+            <option>Please Select An Option</option>
+            <option ng-repeat="item in lexicalModels" value="{{item}}">{{item}}</option>
+        </select>
+    </div>
+    <div class="col-md-1">
+        <button class="btn btn-primary" ng-click="loadLexicalModel()">Load</button>
+    </div>
+    <button class="btn btn-primary col-md-2" style="margin-right:10px;"ng-click="saveLexicalModel()">Save Lexical Model</button>
+    <div class="col-md-2" ng-show="lexicalSuccess">Lexical Model Successfully Saved.</div>
+</div>
+<div class="col-md-12 row">
+    <div class="col-md-6">
+        </br>
+        <textarea class="col-md-12" style="height:300px" id="lexicalJsonTextarea" ng-model="lexicalJsonString"></textarea>
+        <span class="red" ng-if="!lexicalWellFormed">JSON is invalid</span>
+    </div>
+    <div class="jsonView col-md-6">
+        <json child="lexicalJsonData" default-collapsed="false" type="object"></json>
+    </div>
+</div>
+
+<button class="btn btn-primary pull-right" style="margin-left:10px;" ng-click="generateMatrix()">Next...</button>
