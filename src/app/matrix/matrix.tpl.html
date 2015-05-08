@@ -22,29 +22,12 @@
         <thead>
             <tr>
                 <th>Parent Concept Id</th>
-                <th ng-repeat="(key, value) in headers">{{value}}</th>
+                <th ng-repeat="(key, value) in headers track by $index">{{value}}</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td></td>
-                <td ng-repeat="(key, value) in headers"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td ng-repeat="(key, value) in headers"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td ng-repeat="(key, value) in headers"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td ng-repeat="(key, value) in headers"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td ng-repeat="(key, value) in headers"></td>
+            <tr ng-repeat="row in results">
+                <th ng-repeat="item in model.attributeRestrictionGroups">{{row[item]}}</th>
             </tr>
         </tbody>
     </table>

@@ -90,29 +90,12 @@ angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($te
     "        <thead>\n" +
     "            <tr>\n" +
     "                <th>Parent Concept Id</th>\n" +
-    "                <th ng-repeat=\"(key, value) in headers\">{{value}}</th>\n" +
+    "                <th ng-repeat=\"(key, value) in headers track by $index\">{{value}}</th>\n" +
     "            </tr>\n" +
     "        </thead>\n" +
     "        <tbody>\n" +
-    "            <tr>\n" +
-    "                <td></td>\n" +
-    "                <td ng-repeat=\"(key, value) in headers\"></td>\n" +
-    "            </tr>\n" +
-    "            <tr>\n" +
-    "                <td></td>\n" +
-    "                <td ng-repeat=\"(key, value) in headers\"></td>\n" +
-    "            </tr>\n" +
-    "            <tr>\n" +
-    "                <td></td>\n" +
-    "                <td ng-repeat=\"(key, value) in headers\"></td>\n" +
-    "            </tr>\n" +
-    "            <tr>\n" +
-    "                <td></td>\n" +
-    "                <td ng-repeat=\"(key, value) in headers\"></td>\n" +
-    "            </tr>\n" +
-    "            <tr>\n" +
-    "                <td></td>\n" +
-    "                <td ng-repeat=\"(key, value) in headers\"></td>\n" +
+    "            <tr ng-repeat=\"row in results\">\n" +
+    "                <th ng-repeat=\"item in model.attributeRestrictionGroups\">{{row[item]}}</th>\n" +
     "            </tr>\n" +
     "        </tbody>\n" +
     "    </table>\n" +
