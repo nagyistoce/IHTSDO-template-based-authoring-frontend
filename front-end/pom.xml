@@ -34,6 +34,7 @@
 					<executable>grunt</executable>
 					<arguments>
 						<argument>--force</argument>
+						<argument>--skip-tests=true</argument>
 					</arguments>
 				</configuration>
 			</plugin>
