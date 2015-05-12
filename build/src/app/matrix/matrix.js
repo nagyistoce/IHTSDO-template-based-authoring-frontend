@@ -42,7 +42,7 @@ angular.module( 'templateBasedAuthoring.matrix', [
     $scope.headers = [];
     $scope.loaded = false;
     $scope.results = [];
-    $scope.parsedHeaders = [];
+    $scope.unParsedHeaders = [];
     MatrixService.getLogicalModel(sharedVariablesService.getTemplateName()).then(function(data) {
             $scope.model = data.data;
             $scope.parseModel($scope.model);
@@ -53,6 +53,7 @@ angular.module( 'templateBasedAuthoring.matrix', [
             for(var j = 0; j < model.attributeRestrictionGroups[i].length; j++)
             {
                 $scope.headers.push(model.attributeRestrictionGroups[i][j].typeConceptId);
+                $scope.unParsedHeaders.push(model.attributeRestrictionGroups[i][j].typeConceptId);
             }
         }
         callServiceForEachItem();
@@ -86,9 +87,6 @@ angular.module( 'templateBasedAuthoring.matrix', [
                 });
       };
     };
-    $scope.assignName = function(header, data){
-        header = data;
-    };
 
 	function Output(msg) {
 		var m = document.getElementById("messages");
@@ -117,7 +115,8 @@ angular.module( 'templateBasedAuthoring.matrix', [
         
         reader.onload = function(e) {
             $scope.results = $scope.tsvJSON(e.target.result);
-            console.log($scope.results);
+            $scope.validationJson($scope.results);
+            console.log($scope.concept);
             $scope.loaded = true;
         };
         reader.readAsText(file);
@@ -154,25 +153,57 @@ angular.module( 'templateBasedAuthoring.matrix', [
     
     $scope.validationJson = function(input) {
         var work = {};
+        work.name = "test";
         work.concepts = [];
         var concept ={};
         concept.term = "test";
         concept.isARelationships = [];
-        var lines = input.split("\n");
-        for(var i=1;i<lines.length;i++){
-          var obj = {};
-          var currentLine = lines[i].split("\t");
-          concept.isARelationships.push(currentLine[0]);
+        concept.attributeGroups = [];
+        var headers = $scope.unParsedHeaders;
+        var temp = {}; 
+        for(var j = 0; j < headers.length; j++)
+        {
+            if(temp[headers[j]] != "temp")
+            {
+                console.log(j);
+                console.log(headers.length);
+                temp[headers[j]] = "temp";
+                if(j == (headers.length -1))
+                {
+                    concept.attributeGroups.push(temp);   
+                }
+            }
+            else{
+                console.log(j);
+                console.log(headers.length);
+                concept.attributeGroups.push(temp);
+                temp = {};
+                temp[headers[j]] = "temp";
+            }
         }
-        //$scope.filterRelationshipArray(concept.isARelationships);        
+        for(var i = 0; i < input.length; i++){
+          var obj = {};
+          var currentLine = input[i];
+          if (concept.isARelationships.indexOf(currentLine.ParentConceptID) == -1) {
+              concept.isARelationships.push(currentLine.ParentConceptID);
+          }
+        }
+        //Loop through groups and fill in variables
+        for(var k = 0; k < concept.attributeGroups.length; k++){
+            $scope.parseAttributes(concept.attributeGroups[k], input);
+        }
+        
+        work.concepts.push(concept);
+        $scope.concept = work;
     };
     
-//    $scope.filterRelationshipArray = function(a) {
-//        var seen = {};
-//        return a.filter(function(item) {
-//            return seen.hasOwnProperty(item) ? false : (seen[item] = true);
-//        });
-//    };
+    $scope.parseAttributes = function(object, input){
+        angular.forEach(object, function(item, name) {
+                console.log(object);
+                object[name] = input[0][name];
+                console.log(input[0][name]);
+            }, object);
+    };
     
     $scope.tsvJSON = function(tsv){
 
@@ -187,6 +218,6 @@ angular.module( 'templateBasedAuthoring.matrix', [
           }
           result.push(obj);
       }
-      return JSON.stringify(result);
+      return result;
     };
 }]);
