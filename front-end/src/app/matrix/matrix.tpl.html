@@ -19,33 +19,16 @@
     </div>
     
     <table class="table table-striped">
-        <thead>
             <tr>
                 <th>Parent Concept Id</th>
-                <th ng-repeat="(key, value) in headers">{{value}}</th>
+                <th ng-repeat="(key, value) in headers track by $index">{{value}}</th>
             </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td></td>
-                <td ng-repeat="(key, value) in headers"></td>
+            <tr ng-repeat="item in results">
+                <td>{{item.ParentConceptID}}</td>
+                <td ng-repeat="(key, value) in unParsedHeaders track by $index">{{item[value]}}</td>
             </tr>
-            <tr>
-                <td></td>
-                <td ng-repeat="(key, value) in headers"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td ng-repeat="(key, value) in headers"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td ng-repeat="(key, value) in headers"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td ng-repeat="(key, value) in headers"></td>
-            </tr>
-        </tbody>
     </table>
+    <div>
+    </div>
+    
 </div>
