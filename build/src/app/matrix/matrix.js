@@ -116,8 +116,11 @@ angular.module( 'templateBasedAuthoring.matrix', [
         reader.onload = function(e) {
             $scope.results = $scope.tsvJSON(e.target.result);
             $scope.validationJson($scope.results);
-            console.log($scope.concept);
+            console.log($scope.results);
+            console.log($scope.results[0]);
+            console.log($scope.results[0]['260686004']);
             $scope.loaded = true;
+            $scope.$apply();
         };
         reader.readAsText(file);
         
@@ -165,8 +168,6 @@ angular.module( 'templateBasedAuthoring.matrix', [
         {
             if(temp[headers[j]] != "temp")
             {
-                console.log(j);
-                console.log(headers.length);
                 temp[headers[j]] = "temp";
                 if(j == (headers.length -1))
                 {
@@ -174,8 +175,6 @@ angular.module( 'templateBasedAuthoring.matrix', [
                 }
             }
             else{
-                console.log(j);
-                console.log(headers.length);
                 concept.attributeGroups.push(temp);
                 temp = {};
                 temp[headers[j]] = "temp";
@@ -192,16 +191,13 @@ angular.module( 'templateBasedAuthoring.matrix', [
         for(var k = 0; k < concept.attributeGroups.length; k++){
             $scope.parseAttributes(concept.attributeGroups[k], input);
         }
-        
         work.concepts.push(concept);
         $scope.concept = work;
     };
     
     $scope.parseAttributes = function(object, input){
         angular.forEach(object, function(item, name) {
-                console.log(object);
                 object[name] = input[0][name];
-                console.log(input[0][name]);
             }, object);
     };
     

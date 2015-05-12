@@ -87,17 +87,17 @@ angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($te
     "    </div>\n" +
     "    \n" +
     "    <table class=\"table table-striped\">\n" +
-    "        <thead>\n" +
     "            <tr>\n" +
     "                <th>Parent Concept Id</th>\n" +
     "                <th ng-repeat=\"(key, value) in headers track by $index\">{{value}}</th>\n" +
     "            </tr>\n" +
-    "        </thead>\n" +
-    "        <tbody>\n" +
-    "            <tr ng-repeat=\"row in results\">\n" +
-    "                <th ng-repeat=\"item in model.attributeRestrictionGroups\">{{row[item]}}</th>\n" +
+    "            <tr ng-repeat=\"item in results\">\n" +
+    "                <td>{{item.ParentConceptID}}</td>\n" +
+    "                <td ng-repeat=\"(key, value) in unParsedHeaders track by $index\">{{item[value]}}</td>\n" +
     "            </tr>\n" +
-    "        </tbody>\n" +
     "    </table>\n" +
+    "    <div>\n" +
+    "    </div>\n" +
+    "    \n" +
     "</div>");
 }]);

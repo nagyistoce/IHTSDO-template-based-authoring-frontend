@@ -19,16 +19,16 @@
     </div>
     
     <table class="table table-striped">
-        <thead>
             <tr>
                 <th>Parent Concept Id</th>
                 <th ng-repeat="(key, value) in headers track by $index">{{value}}</th>
             </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="row in results">
-                <th ng-repeat="item in model.attributeRestrictionGroups">{{row[item]}}</th>
+            <tr ng-repeat="item in results">
+                <td>{{item.ParentConceptID}}</td>
+                <td ng-repeat="(key, value) in unParsedHeaders track by $index">{{item[value]}}</td>
             </tr>
-        </tbody>
     </table>
+    <div>
+    </div>
+    
 </div>
