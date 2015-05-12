@@ -35,7 +35,8 @@ server {
 		server_name	localhost;
  
 		location / {
-			root /Users/{your_account_here}/template-based-authoring-frontend/bin;
+			root /Users/{your_account_here}/template-based-authoring-frontend/front-end/bin;
+
 		}
  
 		location /snowowl {
