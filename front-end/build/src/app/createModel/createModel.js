@@ -147,7 +147,7 @@ angular.module( 'templateBasedAuthoring.createModel', [
     };
     
     $scope.generateMatrix = function() {
-        sharedVariablesService.setTemplateName($scope.logicalJsonData.name + "_" + $scope.lexicalJsonData.name);
+        sharedVariablesService.setTemplateName($scope.logicalJsonData.name);
         $location.path('/matrix');
     };
 }]);

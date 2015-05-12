@@ -40,7 +40,9 @@ angular.module( 'templateBasedAuthoring.matrix', [
 
 .controller( 'MatrixCtrl', ['$scope', '$filter', 'MatrixService', 'sharedVariablesService', 'snowowlService', function matrixCtrl($scope, $filter, MatrixService, sharedVariablesService, snowowlService) {
     $scope.headers = [];
-    $scope.parsedHeaders = [];
+    $scope.loaded = false;
+    $scope.results = [];
+    $scope.unParsedHeaders = [];
     MatrixService.getLogicalModel(sharedVariablesService.getTemplateName()).then(function(data) {
             $scope.model = data.data;
             $scope.parseModel($scope.model);
@@ -51,6 +53,7 @@ angular.module( 'templateBasedAuthoring.matrix', [
             for(var j = 0; j < model.attributeRestrictionGroups[i].length; j++)
             {
                 $scope.headers.push(model.attributeRestrictionGroups[i][j].typeConceptId);
+                $scope.unParsedHeaders.push(model.attributeRestrictionGroups[i][j].typeConceptId);
             }
         }
         callServiceForEachItem();
@@ -84,9 +87,6 @@ angular.module( 'templateBasedAuthoring.matrix', [
                 });
       };
     };
-    $scope.assignName = function(header, data){
-        header = data;
-    };
 
 	function Output(msg) {
 		var m = document.getElementById("messages");
@@ -114,8 +114,13 @@ angular.module( 'templateBasedAuthoring.matrix', [
         var reader = new FileReader();
         
         reader.onload = function(e) {
-            var results = $scope.tsvJSON(e.target.result);
-            console.log(results);
+            $scope.results = $scope.tsvJSON(e.target.result);
+            $scope.validationJson($scope.results);
+            console.log($scope.results);
+            console.log($scope.results[0]);
+            console.log($scope.results[0]['260686004']);
+            $scope.loaded = true;
+            $scope.$apply();
         };
         reader.readAsText(file);
         
@@ -148,26 +153,67 @@ angular.module( 'templateBasedAuthoring.matrix', [
         
 		$scope.Init();
 	}
+    
+    $scope.validationJson = function(input) {
+        var work = {};
+        work.name = "test";
+        work.concepts = [];
+        var concept ={};
+        concept.term = "test";
+        concept.isARelationships = [];
+        concept.attributeGroups = [];
+        var headers = $scope.unParsedHeaders;
+        var temp = {}; 
+        for(var j = 0; j < headers.length; j++)
+        {
+            if(temp[headers[j]] != "temp")
+            {
+                temp[headers[j]] = "temp";
+                if(j == (headers.length -1))
+                {
+                    concept.attributeGroups.push(temp);   
+                }
+            }
+            else{
+                concept.attributeGroups.push(temp);
+                temp = {};
+                temp[headers[j]] = "temp";
+            }
+        }
+        for(var i = 0; i < input.length; i++){
+          var obj = {};
+          var currentLine = input[i];
+          if (concept.isARelationships.indexOf(currentLine.ParentConceptID) == -1) {
+              concept.isARelationships.push(currentLine.ParentConceptID);
+          }
+        }
+        //Loop through groups and fill in variables
+        for(var k = 0; k < concept.attributeGroups.length; k++){
+            $scope.parseAttributes(concept.attributeGroups[k], input);
+        }
+        work.concepts.push(concept);
+        $scope.concept = work;
+    };
+    
+    $scope.parseAttributes = function(object, input){
+        angular.forEach(object, function(item, name) {
+                object[name] = input[0][name];
+            }, object);
+    };
+    
     $scope.tsvJSON = function(tsv){
 
-      var lines=tsv.split("\n");
-
+      var lines = tsv.split("\n");
       var result = [];
-
-      var headers=lines[0].split("\t");
-
-      for(var i=1;i<lines.length;i++){
-
+      var headers= lines[0].split("\t");
+      for(var i = 1; i < lines.length; i++){
           var obj = {};
-          var currentline=lines[i].split("\t");
-
-          for(var j=0;j<headers.length;j++){
+          var currentline = lines[i].split("\t");
+          for(var j = 0 ; j < headers.length; j++){
               obj[headers[j]] = currentline[j];
           }
-
           result.push(obj);
-
       }
-      return JSON.stringify(result);
+      return result;
     };
 }]);
