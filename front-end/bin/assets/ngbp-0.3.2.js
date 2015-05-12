@@ -1,9 +1,5 @@
 /**
-<<<<<<< HEAD:front-end/bin/assets/ngbp-0.3.2.js
- * ngbp - v0.3.2 - 2015-05-11
-=======
  * ngbp - v0.3.2 - 2015-05-12
->>>>>>> feature/validation:bin/assets/ngbp-0.3.2.js
  * https://github.com/ngbp/ngbp
  *
  * Copyright (c) 2015 Josh David Miller
