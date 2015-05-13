@@ -23,8 +23,30 @@ angular.module( 'templateBasedAuthoring.matrix', [
                         return response;
                     });
             },
+        getTemplate: function (name) {
+                return $http.get(apiEndpoint +'templates/' + name).then(function(response) {
+                        return response;
+                    });
+        },
         getLogicalModel: function (logicalModelName) {
                 return $http.get(apiEndpoint +'models/logical/' + logicalModelName).then(function(response) {
+                        return response;
+                    });
+            },
+        getLexicalModel: function (lexicalModelName) {
+                return $http.get(apiEndpoint +'models/lexical/' + lexicalModelName).then(function(response) {
+                        return response;
+                    });
+            },
+        saveWork: function (templateName, work) {
+                return $http.post(apiEndpoint +'templates/' + templateName + '/work', work, {
+                        headers: { 'Content-Type': 'application/json; charset=UTF-8'}
+                    }).then(function(response) {
+                        return response;
+                    });
+            },
+        workValidation: function (templateName, workId) {
+                return $http.get(apiEndpoint + 'templates/' + templateName + '/work/' + workId + '/validation').then(function(response) {
                         return response;
                     });
             },
@@ -43,9 +65,16 @@ angular.module( 'templateBasedAuthoring.matrix', [
     $scope.loaded = false;
     $scope.results = [];
     $scope.unParsedHeaders = [];
-    MatrixService.getLogicalModel(sharedVariablesService.getTemplateName()).then(function(data) {
-            $scope.model = data.data;
-            $scope.parseModel($scope.model);
+    $scope.saved = false;
+    $scope.work = {};
+    $scope.validationPassed = false;
+    $scope.validationFailed = false;
+    MatrixService.getTemplate(sharedVariablesService.getTemplateName()).then(function(data) {
+            $scope.templateName = data.data.name;
+            MatrixService.getLogicalModel(data.data.logicalModelName).then(function(innerData) {
+                $scope.model = innerData.data;
+                $scope.parseModel($scope.model);
+            });
         });
     $scope.parseModel = function(model) {
         for(var i = 0; i < model.attributeRestrictionGroups.length; i++)
@@ -87,6 +116,33 @@ angular.module( 'templateBasedAuthoring.matrix', [
                 });
       };
     };
+    
+    function guid() {
+      function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+          .toString(16)
+          .substring(1);
+      }
+      return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+        s4() + '-' + s4() + s4() + s4();
+    }
+    $scope.saveWork = function(){
+        MatrixService.saveWork($scope.templateName, $scope.work).then(function(data){
+            $scope.saved = true;
+            MatrixService.workValidation($scope.templateName, data.data.name).then(function(innerData){
+                $scope.validationErrors = innerData.data;
+                if(innerData.data.anyError === false)
+                {
+                    $scope.validationFailed = false;
+                    $scope.validationPassed = true;   
+                }
+                else{
+                    $scope.validationPassed = false; 
+                    $scope.validationFailed = true;
+                }
+            });
+        });
+    };
 
 	function Output(msg) {
 		var m = document.getElementById("messages");
@@ -112,13 +168,9 @@ angular.module( 'templateBasedAuthoring.matrix', [
 
 	function ParseFile(file) {
         var reader = new FileReader();
-        
         reader.onload = function(e) {
             $scope.results = $scope.tsvJSON(e.target.result);
             $scope.validationJson($scope.results);
-            console.log($scope.results);
-            console.log($scope.results[0]);
-            console.log($scope.results[0]['260686004']);
             $scope.loaded = true;
             $scope.$apply();
         };
@@ -157,8 +209,10 @@ angular.module( 'templateBasedAuthoring.matrix', [
     $scope.validationJson = function(input) {
         var work = {};
         work.name = "test";
+        work.taskID = "test";
         work.concepts = [];
         var concept ={};
+        concept.id = guid();
         concept.term = "test";
         concept.isARelationships = [];
         concept.attributeGroups = [];

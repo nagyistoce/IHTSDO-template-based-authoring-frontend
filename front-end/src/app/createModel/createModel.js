@@ -69,6 +69,17 @@ angular.module( 'templateBasedAuthoring.createModel', [
                         return response;
                     });
             },
+        saveTemplate: function (lexicalModelName, logicalModelName, name) {
+                var json = {};
+                json.name = name;
+                json.lexicalModelName = lexicalModelName;
+                json.logicalModelName = logicalModelName;
+                return $http.post(apiEndpoint +'templates', json, {
+                        headers: { 'Content-Type': 'application/json; charset=UTF-8'}
+                    }).then(function(response) {
+                        return response;
+                    });
+        },
        //Common
          getConceptDescendants: function (conceptId) {
                 return $http.get(apiEndpoint +'descendants/' + conceptId).then(function(response) {
@@ -147,7 +158,8 @@ angular.module( 'templateBasedAuthoring.createModel', [
     };
     
     $scope.generateMatrix = function() {
-        sharedVariablesService.setTemplateName($scope.logicalJsonData.name);
+        ModelService.saveTemplate($scope.lexicalJsonData.name, $scope.logicalJsonData.name, "Test");
+        sharedVariablesService.setTemplateName("Test");
         $location.path('/matrix');
     };
 }]);

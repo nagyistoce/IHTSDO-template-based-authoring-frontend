@@ -29,6 +29,14 @@
             </tr>
     </table>
     <div>
+    <button ng-disabled="!loaded" class="btn btn-primary" ng-click="saveWork()">Save and Validate Work</button>
+    <div ng-if="validationPassed">
+        Work Has been saved and Successfully passed Validation.    
+    </div>
+    <div ng-if="validationFailed">
+        Work Has been saved but failed Validation:
+        {{validationErrors}}
+    </div>
     </div>
     
 </div>

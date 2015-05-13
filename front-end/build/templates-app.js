@@ -97,6 +97,14 @@ angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($te
     "            </tr>\n" +
     "    </table>\n" +
     "    <div>\n" +
+    "    <button ng-disabled=\"!loaded\" class=\"btn btn-primary\" ng-click=\"saveWork()\">Save and Validate Work</button>\n" +
+    "    <div ng-if=\"validationPassed\">\n" +
+    "        Work Has been saved and Successfully passed Validation.    \n" +
+    "    </div>\n" +
+    "    <div ng-if=\"validationFailed\">\n" +
+    "        Work Has been saved but failed Validation:\n" +
+    "        {{validationErrors}}\n" +
+    "    </div>\n" +
     "    </div>\n" +
     "    \n" +
     "</div>");
