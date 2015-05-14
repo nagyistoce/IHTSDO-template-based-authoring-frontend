@@ -45,6 +45,11 @@ angular.module( 'templateBasedAuthoring.matrix', [
                         return response;
                     });
             },
+        commitWork: function (templateName, workId) {
+                return $http.post(apiEndpoint + 'templates/' + templateName + '/work/' + workId + '/commit').then(function(response) {
+                        return response;
+                    });
+            },
         workValidation: function (templateName, workId) {
                 return $http.get(apiEndpoint + 'templates/' + templateName + '/work/' + workId + '/validation').then(function(response) {
                         return response;
@@ -129,6 +134,7 @@ angular.module( 'templateBasedAuthoring.matrix', [
     $scope.saveWork = function(){
         MatrixService.saveWork($scope.templateName, $scope.work).then(function(data){
             $scope.saved = true;
+            $scope.workId = data.data.name;
             MatrixService.workValidation($scope.templateName, data.data.name).then(function(innerData){
                 $scope.validationErrors = innerData.data;
                 if(innerData.data.anyError === false)
@@ -141,6 +147,12 @@ angular.module( 'templateBasedAuthoring.matrix', [
                     $scope.validationFailed = true;
                 }
             });
+        });
+    };
+    $scope.commitWork = function(){
+        MatrixService.commitWork($scope.templateName, $scope.workId).then(function(data){
+            $scope.taskId = data.data.taskId;
+            $scope.committed = true;
         });
     };
 

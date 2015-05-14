@@ -28,8 +28,13 @@
                 <td ng-repeat="(key, value) in unParsedHeaders track by $index">{{item[value]}}</td>
             </tr>
     </table>
-    <div>
-    <button ng-disabled="!loaded" class="btn btn-primary" ng-click="saveWork()">Save and Validate Work</button>
+</div>
+<div class="col-md-12 row">
+    <button style="margin-right:10px" ng-disabled="!loaded" class="btn btn-primary col-md-2" ng-click="saveWork()">Save and Validate Work</button>
+    <button style="margin-right:10px" ng-disabled="!validationPassed" class="btn btn-primary col-md-2" ng-click="commitWork()">Commit Work</button>
+    <button style="margin-right:10px" ng-disabled="!commited" class="btn btn-primary col-md-2" ng-click="classifyWork()">Classify Work</button>
+</div>
+<div class="col-md-12 row">
     <div ng-if="validationPassed">
         Work Has been saved and Successfully passed Validation.    
     </div>
@@ -37,6 +42,7 @@
         Work Has been saved but failed Validation:
         {{validationErrors}}
     </div>
+    <div ng-if="committed">
+        Your work has been Committed. The Task Id is {{taskId}}    
     </div>
-    
 </div>

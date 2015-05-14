@@ -97,8 +97,13 @@ angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($te
     "                <td ng-repeat=\"(key, value) in unParsedHeaders track by $index\">{{item[value]}}</td>\n" +
     "            </tr>\n" +
     "    </table>\n" +
-    "    <div>\n" +
-    "    <button ng-disabled=\"!loaded\" class=\"btn btn-primary\" ng-click=\"saveWork()\">Save and Validate Work</button>\n" +
+    "</div>\n" +
+    "<div class=\"col-md-12 row\">\n" +
+    "    <button style=\"margin-right:10px\" ng-disabled=\"!loaded\" class=\"btn btn-primary col-md-2\" ng-click=\"saveWork()\">Save and Validate Work</button>\n" +
+    "    <button style=\"margin-right:10px\" ng-disabled=\"!validationPassed\" class=\"btn btn-primary col-md-2\" ng-click=\"commitWork()\">Commit Work</button>\n" +
+    "    <button style=\"margin-right:10px\" ng-disabled=\"!commited\" class=\"btn btn-primary col-md-2\" ng-click=\"classifyWork()\">Classify Work</button>\n" +
+    "</div>\n" +
+    "<div class=\"col-md-12 row\">\n" +
     "    <div ng-if=\"validationPassed\">\n" +
     "        Work Has been saved and Successfully passed Validation.    \n" +
     "    </div>\n" +
@@ -106,7 +111,8 @@ angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($te
     "        Work Has been saved but failed Validation:\n" +
     "        {{validationErrors}}\n" +
     "    </div>\n" +
+    "    <div ng-if=\"committed\">\n" +
+    "        Your work has been Committed. The Task Id is {{taskId}}    \n" +
     "    </div>\n" +
-    "    \n" +
     "</div>");
 }]);
