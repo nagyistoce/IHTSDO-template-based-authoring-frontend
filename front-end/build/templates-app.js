@@ -107,12 +107,31 @@ angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($te
     "    <div ng-if=\"validationPassed\">\n" +
     "        Work Has been saved and Successfully passed Validation.    \n" +
     "    </div>\n" +
+    "    </br>\n" +
     "    <div ng-if=\"validationFailed\">\n" +
     "        Work Has been saved but failed Validation:\n" +
-    "        {{validationErrors}}\n" +
+    "        {{validationErrors | prettyJSON}}\n" +
     "    </div>\n" +
+    "    </br>\n" +
     "    <div ng-if=\"committed\">\n" +
     "        Your work has been Committed. The Task Id is {{taskId}}    \n" +
     "    </div>\n" +
+    "    </br>\n" +
+    "</div>\n" +
+    "\n" +
+    "<div class=\"col-md-12 row\">\n" +
+    "    <div ng-if=\"classified\">  \n" +
+    "        <div>\n" +
+    "        Equivalence Report:\n" +
+    "        {{equivalenceReport | prettyJSON}}\n" +
+    "        </div>\n" +
+    "        </br>\n" +
+    "        <div>\n" +
+    "            Relationship Changes Report:\n" +
+    "            {{relationshipChangeReport | prettyJSON}}\n" +
+    "        </div>\n" +
+    "        </br>\n" +
+    "    </div>\n" +
+    "    \n" +
     "</div>");
 }]);

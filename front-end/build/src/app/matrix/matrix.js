@@ -15,6 +15,13 @@ angular.module( 'templateBasedAuthoring.matrix', [
   });
 }])
 
+.filter('prettyJSON', function () {
+    function syntaxHighlight(json) {
+      return JSON ? JSON.stringify(json, null, '  ') : 'your browser doesnt support JSON so cant pretty print';
+    }
+    return syntaxHighlight;
+})
+
 .service('MatrixService', ['$http', function ($http) {
     var apiEndpoint = "/snowowl/ihtsdo-authoring/";
     var snowowlEndpoint = "/snowowl/snomed-ct/";
@@ -70,11 +77,26 @@ angular.module( 'templateBasedAuthoring.matrix', [
                     }).then(function(response) {
                         return response;
                     });
-            }
+            },
+        checkClassificationResult: function (classifierId, taskId) {
+                return $http.get(snowowlEndpoint + 'MAIN/tasks/' + taskId + '/classifications/' + classifierId ).then(function(response) {
+                        return response;
+                    });
+        },
+        getEquivalentConcepts: function (classifierId, taskId) {
+                return $http.get(snowowlEndpoint + 'MAIN/tasks/' + taskId + '/classifications/' + classifierId + '/equivalent-concepts').then(function(response) {
+                        return response;
+                    });
+        },
+        getRelationshipChanges: function (classifierId, taskId) {
+                return $http.get(snowowlEndpoint + 'MAIN/tasks/' + taskId + '/classifications/' + classifierId + '/relationship-changes').then(function(response) {
+                        return response;
+                    });
+        }
     };
 }])
 
-.controller( 'MatrixCtrl', ['$scope', '$filter', 'MatrixService', 'sharedVariablesService', 'snowowlService', function matrixCtrl($scope, $filter, MatrixService, sharedVariablesService, snowowlService) {
+.controller( 'MatrixCtrl', ['$scope', '$filter', 'MatrixService', 'sharedVariablesService', 'snowowlService', '$timeout', '$window', function matrixCtrl($scope, $filter, MatrixService, sharedVariablesService, snowowlService, $timeout, $window) {
     $scope.headers = [];
     $scope.loaded = false;
     $scope.results = [];
@@ -117,6 +139,7 @@ angular.module( 'templateBasedAuthoring.matrix', [
         }
       });
     }
+    
     $scope.getName = function(id){
         snowowlService.getConceptName(id).then(function(data) {
                     var index = $scope.headers.indexOf(id);
@@ -168,8 +191,38 @@ angular.module( 'templateBasedAuthoring.matrix', [
         MatrixService.startClassification($scope.taskId).then(function(data){
             var location = data.headers('Location');
             $scope.classifactionJobId = location.replace(/^.*\/(.*)$/, "$1");
-            console.log($scope.classifactionJobId);
+            $scope.pollForResult();
         });
+    };
+    
+    $scope.pollForResult = function() {
+        $timeout(function() {
+            MatrixService.checkClassificationResult($scope.classifactionJobId, $scope.taskId).then(function(data){
+                if(data.data.status == "COMPLETED")
+                {
+                    $scope.validationResultsComplete = true;
+                    return;
+                }
+            });
+            if($scope.validationResultsComplete === true)
+            {
+                $scope.generateClassifierResults();
+                return;
+            }
+            $scope.pollForResult();
+        }, 20000);
+    };
+    
+    $scope.generateClassifierResults = function() {
+        var jsonData = {};
+        var jsonDataTwo = {};
+        MatrixService.getEquivalentConcepts($scope.classifactionJobId, $scope.taskId).then(function(data){
+                $scope.equivalenceReport = data.data;
+            });
+        MatrixService.getRelationshipChanges($scope.classifactionJobId, $scope.taskId).then(function(data){
+                $scope.relationshipChangeReport = data.data;
+            });
+        $scope.classified = true;
     };
 
 	function Output(msg) {

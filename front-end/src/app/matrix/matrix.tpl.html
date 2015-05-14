@@ -38,11 +38,30 @@
     <div ng-if="validationPassed">
         Work Has been saved and Successfully passed Validation.    
     </div>
+    </br>
     <div ng-if="validationFailed">
         Work Has been saved but failed Validation:
-        {{validationErrors}}
+        {{validationErrors | prettyJSON}}
     </div>
+    </br>
     <div ng-if="committed">
         Your work has been Committed. The Task Id is {{taskId}}    
     </div>
+    </br>
+</div>
+
+<div class="col-md-12 row">
+    <div ng-if="classified">  
+        <div>
+        Equivalence Report:
+        {{equivalenceReport | prettyJSON}}
+        </div>
+        </br>
+        <div>
+            Relationship Changes Report:
+            {{relationshipChangeReport | prettyJSON}}
+        </div>
+        </br>
+    </div>
+    
 </div>
