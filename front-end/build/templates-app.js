@@ -2,22 +2,24 @@ angular.module('templates-app', ['createModel/createModel.tpl.html', 'matrix/mat
 
 angular.module("createModel/createModel.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("createModel/createModel.tpl.html",
-    "<h2 style=\"margin-left:15px;\">New Logical Model:</h2>\n" +
+    "<h2>New Logical Model:</h2>\n" +
     "<div class=\"col-md-12 row\">\n" +
-    "    <div class=\"col-md-2\">\n" +
-    "        <div>Select a Logical Model to Load:</div>\n" +
-    "    </div>\n" +
-    "    <div class=\"col-md-2\">\n" +
+    "    <span>\n" +
+    "       Select a Logical Model to Load:\n" +
+    "    </span>\n" +
+    "    <span>\n" +
     "        <select ng-model=\"logicalModelToLoad\">\n" +
     "            <option>Please Select An Option</option>\n" +
     "            <option ng-repeat=\"item in logicalModels\" value=\"{{item}}\">{{item}}</option>\n" +
     "        </select>\n" +
-    "    </div>\n" +
-    "    <div class=\"col-md-1\">\n" +
+    "    </span>\n" +
+    "   <span>\n" +
     "        <button class=\"btn btn-primary\" ng-click=\"loadLogicalModel()\">Load</button>\n" +
-    "    </div>\n" +
-    "    <button class=\"btn btn-primary col-md-2\" style=\"margin-right:10px;\"ng-click=\"saveLogicalModel()\">Save Logical Model</button>\n" +
-    "    <div class=\"col-md-2\" ng-show=\"logicalSuccess\">Logical Model Successfully Saved.</div>\n" +
+    "    </span>\n" +
+    "    <span>\n" +
+    "    <button class=\"btn btn-primary\" style=\"margin-right:10px;\"ng-click=\"saveLogicalModel()\">Save Logical Model</button>\n" +
+    "     </span>\n" +
+    "    <span class=\"col-md-2\" ng-show=\"logicalSuccess\">Logical Model Successfully Saved.</span>\n" +
     "</div>\n" +
     "<div class=\"col-md-12 row\">\n" +
     "    <div class=\"col-md-6\">\n" +
@@ -29,24 +31,23 @@ angular.module("createModel/createModel.tpl.html", []).run(["$templateCache", fu
     "        <json child=\"logicalJsonData\" default-collapsed=\"false\" type=\"object\"></json>\n" +
     "    </div>\n" +
     "</div>\n" +
-    "<br/>\n" +
-    "<hr/>\n" +
-    "<br/>\n" +
-    "<h2 style=\"margin-left:15px;\">New Lexical Model:</h2>\n" +
+    "\n" +
+    "\n" +
     "<div class=\"col-md-12 row\">\n" +
-    "    <div class=\"col-md-2\">\n" +
-    "        <div>Select a Lexical Model to Load:</div>\n" +
-    "    </div>\n" +
-    "    <div class=\"col-md-2\">\n" +
+    "<h2>New Lexical Model:</h2>\n" +
+    "   <span>\n" +
+    "    Select a Lexical Model to Load:\n" +
+    "  </span>\n" +
+    "    <span>\n" +
     "        <select ng-model=\"lexicalModelToLoad\">\n" +
     "            <option>Please Select An Option</option>\n" +
     "            <option ng-repeat=\"item in lexicalModels\" value=\"{{item}}\">{{item}}</option>\n" +
     "        </select>\n" +
-    "    </div>\n" +
-    "    <div class=\"col-md-1\">\n" +
+    "    </span>\n" +
+    "   <span>\n" +
     "        <button class=\"btn btn-primary\" ng-click=\"loadLexicalModel()\">Load</button>\n" +
-    "    </div>\n" +
-    "    <button class=\"btn btn-primary col-md-2\" style=\"margin-right:10px;\"ng-click=\"saveLexicalModel()\">Save Lexical Model</button>\n" +
+    "   </span>\n" +
+    "    <button class=\"btn btn-primary style=\"margin-right:10px;\"ng-click=\"saveLexicalModel()\">Save Lexical Model</button>\n" +
     "    <div class=\"col-md-2\" ng-show=\"lexicalSuccess\">Lexical Model Successfully Saved.</div>\n" +
     "</div>\n" +
     "<div class=\"col-md-12 row\">\n" +

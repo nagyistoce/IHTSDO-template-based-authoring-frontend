@@ -1,19 +1,21 @@
-<h2 style="margin-left:15px;">New Logical Model:</h2>
+<h2>New Logical Model:</h2>
 <div class="col-md-12 row">
-    <div class="col-md-2">
-        <div>Select a Logical Model to Load:</div>
-    </div>
-    <div class="col-md-2">
+    <span>
+       Select a Logical Model to Load:
+    </span>
+    <span>
         <select ng-model="logicalModelToLoad">
             <option>Please Select An Option</option>
             <option ng-repeat="item in logicalModels" value="{{item}}">{{item}}</option>
         </select>
-    </div>
-    <div class="col-md-1">
+    </span>
+   <span>
         <button class="btn btn-primary" ng-click="loadLogicalModel()">Load</button>
-    </div>
-    <button class="btn btn-primary col-md-2" style="margin-right:10px;"ng-click="saveLogicalModel()">Save Logical Model</button>
-    <div class="col-md-2" ng-show="logicalSuccess">Logical Model Successfully Saved.</div>
+    </span>
+    <span>
+    <button class="btn btn-primary" style="margin-right:10px;"ng-click="saveLogicalModel()">Save Logical Model</button>
+     </span>
+    <span class="col-md-2" ng-show="logicalSuccess">Logical Model Successfully Saved.</span>
 </div>
 <div class="col-md-12 row">
     <div class="col-md-6">
@@ -25,24 +27,23 @@
         <json child="logicalJsonData" default-collapsed="false" type="object"></json>
     </div>
 </div>
-<br/>
-<hr/>
-<br/>
-<h2 style="margin-left:15px;">New Lexical Model:</h2>
+
+
 <div class="col-md-12 row">
-    <div class="col-md-2">
-        <div>Select a Lexical Model to Load:</div>
-    </div>
-    <div class="col-md-2">
+<h2>New Lexical Model:</h2>
+   <span>
+    Select a Lexical Model to Load:
+  </span>
+    <span>
         <select ng-model="lexicalModelToLoad">
             <option>Please Select An Option</option>
             <option ng-repeat="item in lexicalModels" value="{{item}}">{{item}}</option>
         </select>
-    </div>
-    <div class="col-md-1">
+    </span>
+   <span>
         <button class="btn btn-primary" ng-click="loadLexicalModel()">Load</button>
-    </div>
-    <button class="btn btn-primary col-md-2" style="margin-right:10px;"ng-click="saveLexicalModel()">Save Lexical Model</button>
+   </span>
+    <button class="btn btn-primary style="margin-right:10px;"ng-click="saveLexicalModel()">Save Lexical Model</button>
     <div class="col-md-2" ng-show="lexicalSuccess">Lexical Model Successfully Saved.</div>
 </div>
 <div class="col-md-12 row">

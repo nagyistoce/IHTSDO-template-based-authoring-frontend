@@ -8,7 +8,7 @@
     <!-- font awesome from BootstrapCDN -->
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
       <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
-
+<link href='http://fonts.googleapis.com/css?family=Lato|Rokkitt' rel='stylesheet' type='text/css'>
     <!-- compiled CSS -->
     <link rel="stylesheet" type="text/css" href="assets/ngbp-0.3.2.css" />
 
@@ -20,13 +20,14 @@
       { "parsetags": "explicit" }
     </script>
     <script lang="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.core.min.js"></script>
+    
   </head>
   <body>
     <header class="header">
         <div ng-include="'views/appHeader.tpl.html'"></div>  
     </header>
 
-    <div class="container" ui-view="main"></div>
+    <div class="container white-wrapper" ui-view="main"></div>
 
     <footer class="footer">
       <div class="container">

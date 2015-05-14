@@ -5,11 +5,12 @@ angular.module("views/appHeader.tpl.html", []).run(["$templateCache", function($
     "<nav class=\"navbar navbar-default\">\n" +
     "	<div class=\"container\">\n" +
     "		<div class=\"navbar-header\">\n" +
-    "            <a href=\"#\" ng-href=\"#/\">\n" +
-    "                <span ng-hide=\"memberLogo\">\n" +
-    "                    <img class=\"img-responsive\" src=\"assets/logo.png\" alt=\"ihtsdo-logo\">\n" +
-    "                </span>\n" +
-    "            </a>\n" +
+    "        \n" +
+    "        <a class=\"navbar-brand\" href=\"#\" ng-href=\"#/\">\n" +
+    "        <span> <img class=\"img-responsive\" src=\"assets/small_logo.png\" alt=\"ihtsdo-logo\"></span> \n" +
+    "        <span class=\"navbar-version\">Authoring Service</span>\n" +
+    "        </a>\n" +
+    "     \n" +
     "		</div>\n" +
     "		<ul id=\"topNav\"  class=\"nav navbar-nav navbar-right\">\n" +
     "			<li>\n" +
