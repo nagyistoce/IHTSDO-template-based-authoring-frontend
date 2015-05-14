@@ -17,6 +17,7 @@ angular.module( 'templateBasedAuthoring.matrix', [
 
 .service('MatrixService', ['$http', function ($http) {
     var apiEndpoint = "/snowowl/ihtsdo-authoring/";
+    var snowowlEndpoint = "/snowowl/snomed-ct/";
     return {
         getConceptDescendants: function (conceptId) {
                 return $http.get(apiEndpoint +'descendants/' + conceptId).then(function(response) {
@@ -57,6 +58,14 @@ angular.module( 'templateBasedAuthoring.matrix', [
             },
         validateLogicalModel: function (logicalModelName, schema) {
                 return $http.post(apiEndpoint +'models/logical/' + logicalModelName + '/valid-content', schema, {
+                        headers: { 'Content-Type': 'application/json; charset=UTF-8'}
+                    }).then(function(response) {
+                        return response;
+                    });
+            },
+        startClassification: function (taskId) {
+                var JSON = '{"reasonerId": "au.csiro.snorocket.owlapi3.snorocket.factory"}';
+                return $http.post(snowowlEndpoint +'MAIN/tasks/' + taskId + '/classifications', JSON, {
                         headers: { 'Content-Type': 'application/json; charset=UTF-8'}
                     }).then(function(response) {
                         return response;
@@ -155,6 +164,13 @@ angular.module( 'templateBasedAuthoring.matrix', [
             $scope.committed = true;
         });
     };
+    $scope.classifyWork = function(){
+        MatrixService.startClassification($scope.taskId).then(function(data){
+            var location = data.headers('Location');
+            $scope.classifactionJobId = location.replace(/^.*\/(.*)$/, "$1");
+            console.log($scope.classifactionJobId);
+        });
+    };
 
 	function Output(msg) {
 		var m = document.getElementById("messages");
@@ -220,8 +236,8 @@ angular.module( 'templateBasedAuthoring.matrix', [
     
     $scope.validationJson = function(input) {
         var work = {};
-        work.name = "test";
-        work.taskID = "test";
+        work.name = guid();
+        work.taskId = "test";
         work.concepts = [];
         var concept ={};
         concept.id = guid();
@@ -258,7 +274,7 @@ angular.module( 'templateBasedAuthoring.matrix', [
             $scope.parseAttributes(concept.attributeGroups[k], input);
         }
         work.concepts.push(concept);
-        $scope.concept = work;
+        $scope.work = work;
     };
     
     $scope.parseAttributes = function(object, input){
