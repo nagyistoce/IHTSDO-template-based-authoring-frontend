@@ -1,5 +1,5 @@
 angular.module( 'templateBasedAuthoring.matrix', [
-  'ui.router'
+  'ui.router', 'ui.bootstrap'
 ])
 
 .config(["$stateProvider", function config( $stateProvider ) {
@@ -105,6 +105,8 @@ angular.module( 'templateBasedAuthoring.matrix', [
     $scope.work = {};
     $scope.validationPassed = false;
     $scope.validationFailed = false;
+    $scope.errors = {};
+    $scope.objectOrder = [];
     MatrixService.getTemplate(sharedVariablesService.getTemplateName()).then(function(data) {
             $scope.templateName = data.data.name;
             MatrixService.getLogicalModel(data.data.logicalModelName).then(function(innerData) {
@@ -175,18 +177,53 @@ angular.module( 'templateBasedAuthoring.matrix', [
                     $scope.validationPassed = true;   
                 }
                 else{
+                    $scope.renderErrors();
                     $scope.validationPassed = false; 
                     $scope.validationFailed = true;
                 }
             });
         });
     };
+    
+    function isEmpty(obj) {
+        return Object.keys(obj).length === 0;
+    }
+    
+    $scope.renderErrors = function(){
+        if($scope.validationErrors.conceptResults[0].isARelationshipsMessages[0] != null)
+        {
+            var parentError = $scope.validationErrors.conceptResults[0].isARelationshipsMessages[0];
+            $scope.errors.parentConceptID = parentError;
+        }
+        var arrays = $scope.validationErrors.conceptResults[0].attributeGroupsMessages;
+        var merged = [];
+        merged = merged.concat.apply(merged, arrays);
+        for(var i = 0; i < $scope.objectOrder.length; i++)
+        {
+            if(isEmpty(merged[i]))
+            {
+
+            }
+            else{
+                $scope.errors[$scope.objectOrder[i]] = merged[i].valueMessage;
+            }
+        }
+    };
+    
+    $scope.retrieveClass = function(id){
+        if($scope.errors.hasOwnProperty(id))
+        {
+            return "error";
+        }
+    };
+    
     $scope.commitWork = function(){
         MatrixService.commitWork($scope.templateName, $scope.workId).then(function(data){
             $scope.taskId = data.data.taskId;
             $scope.committed = true;
         });
     };
+    
     $scope.classifyWork = function(){
         MatrixService.startClassification($scope.taskId).then(function(data){
             var location = data.headers('Location');
@@ -333,6 +370,7 @@ angular.module( 'templateBasedAuthoring.matrix', [
     $scope.parseAttributes = function(object, input){
         angular.forEach(object, function(item, name) {
                 object[name] = input[0][name];
+                $scope.objectOrder.push(name);
             }, object);
     };
     

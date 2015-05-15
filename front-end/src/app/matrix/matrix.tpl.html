@@ -24,8 +24,12 @@
                 <th ng-repeat="(key, value) in headers track by $index">{{value}}</th>
             </tr>
             <tr ng-repeat="item in results">
-                <td>{{item.ParentConceptID}}</td>
-                <td ng-repeat="(key, value) in unParsedHeaders track by $index">{{item[value]}}</td>
+                <td ng-class="retrieveClass('parentConceptID')" >
+                    <span tooltip="{{errors['parentConceptID']}}">{{item.ParentConceptID}}</span>
+                </td>
+                <td ng-class="retrieveClass(value)" ng-repeat="(key, value) in unParsedHeaders track by $index">
+                    <span tooltip="{{errors[value]}}">{{item[value]}}</span>
+                </td>
             </tr>
     </table>
 </div>
@@ -40,8 +44,7 @@
     </div>
     </br>
     <div ng-if="validationFailed">
-        Work Has been saved but failed Validation:
-        {{validationErrors | prettyJSON}}
+        Work Has been saved but failed Validation
     </div>
     </br>
     <div ng-if="committed">

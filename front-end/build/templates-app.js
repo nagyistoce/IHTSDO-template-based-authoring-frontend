@@ -93,8 +93,12 @@ angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($te
     "                <th ng-repeat=\"(key, value) in headers track by $index\">{{value}}</th>\n" +
     "            </tr>\n" +
     "            <tr ng-repeat=\"item in results\">\n" +
-    "                <td>{{item.ParentConceptID}}</td>\n" +
-    "                <td ng-repeat=\"(key, value) in unParsedHeaders track by $index\">{{item[value]}}</td>\n" +
+    "                <td ng-class=\"retrieveClass('parentConceptID')\" >\n" +
+    "                    <span tooltip=\"{{errors['parentConceptID']}}\">{{item.ParentConceptID}}</span>\n" +
+    "                </td>\n" +
+    "                <td ng-class=\"retrieveClass(value)\" ng-repeat=\"(key, value) in unParsedHeaders track by $index\">\n" +
+    "                    <span tooltip=\"{{errors[value]}}\">{{item[value]}}</span>\n" +
+    "                </td>\n" +
     "            </tr>\n" +
     "    </table>\n" +
     "</div>\n" +
@@ -109,8 +113,7 @@ angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($te
     "    </div>\n" +
     "    </br>\n" +
     "    <div ng-if=\"validationFailed\">\n" +
-    "        Work Has been saved but failed Validation:\n" +
-    "        {{validationErrors | prettyJSON}}\n" +
+    "        Work Has been saved but failed Validation\n" +
     "    </div>\n" +
     "    </br>\n" +
     "    <div ng-if=\"committed\">\n" +
