@@ -68,6 +68,24 @@ angular.module("createModel/createModel.tpl.html", []).run(["$templateCache", fu
 angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("matrix/matrix.tpl.html",
     "<h1 style=\"margin-left:15px;\">Matrix</h1>\n" +
+    "<div ng-if=\"inProgress\" class=\"backgroundCover\">\n" +
+    "    <div class=\"spinnerContainer\">\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "    </div>\n" +
+    "</div>\n" +
+    "\n" +
+    "\n" +
     "<div class=\"col-md-12 row\">\n" +
     "    <form id=\"upload\" onsubmit=\"init()\" method=\"POST\" enctype=\"multipart/form-data\">\n" +
     "        <fieldset>\n" +
@@ -125,8 +143,20 @@ angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($te
     "<div class=\"col-md-12 row\">\n" +
     "    <div ng-if=\"classified\">  \n" +
     "        <div>\n" +
-    "        Equivalence Report:\n" +
-    "        {{equivalenceReport | prettyJSON}}\n" +
+    "            Equivalence Report By Concept (matrix Row) (table per equivalance):\n" +
+    "        </div>\n" +
+    "        <div class=\"col-md-12 row\" ng-repeat=\"item in equivalenceReport\">\n" +
+    "            <table class=\"col-md-3 table table-striped\" ng-repeat=\"row in item.equivalentConcepts\">\n" +
+    "                <tr>\n" +
+    "                    <th>Id</th>\n" +
+    "                    <th>Label</th>\n" +
+    "                </tr>\n" +
+    "                <tr>\n" +
+    "                    <td>{{row.id}}</td>\n" +
+    "                    <td>{{row.label}}</td>\n" +
+    "                </tr>\n" +
+    "            </table>\n" +
+    "            </br>\n" +
     "        </div>\n" +
     "        </br>\n" +
     "        <div>\n" +

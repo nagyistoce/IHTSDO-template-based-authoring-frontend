@@ -1,4 +1,22 @@
 <h1 style="margin-left:15px;">Matrix</h1>
+<div ng-if="inProgress" class="backgroundCover">
+    <div class="spinnerContainer">
+      <div class="thing"></div>
+      <div class="thing"></div>
+      <div class="thing"></div>
+      <div class="thing"></div>
+      <div class="thing"></div>
+      <div class="thing"></div>
+      <div class="thing"></div>
+      <div class="thing"></div>
+      <div class="thing"></div>
+      <div class="thing"></div>
+      <div class="thing"></div>
+      <div class="thing"></div>
+    </div>
+</div>
+
+
 <div class="col-md-12 row">
     <form id="upload" onsubmit="init()" method="POST" enctype="multipart/form-data">
         <fieldset>
@@ -56,8 +74,20 @@
 <div class="col-md-12 row">
     <div ng-if="classified">  
         <div>
-        Equivalence Report:
-        {{equivalenceReport | prettyJSON}}
+            Equivalence Report By Concept (matrix Row) (table per equivalance):
+        </div>
+        <div class="col-md-12 row" ng-repeat="item in equivalenceReport">
+            <table class="col-md-3 table table-striped" ng-repeat="row in item.equivalentConcepts">
+                <tr>
+                    <th>Id</th>
+                    <th>Label</th>
+                </tr>
+                <tr>
+                    <td>{{row.id}}</td>
+                    <td>{{row.label}}</td>
+                </tr>
+            </table>
+            </br>
         </div>
         </br>
         <div>

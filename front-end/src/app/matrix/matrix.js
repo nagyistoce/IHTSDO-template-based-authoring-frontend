@@ -107,10 +107,9 @@ angular.module( 'templateBasedAuthoring.matrix', [
     $scope.validationFailed = false;
     $scope.errors = {};
     $scope.objectOrder = [];
+    $scope.inProgress = false;
     
     $scope.equivalenceTest = '{"items":[{"unsatisfiable":false,"equivalentConcepts":[{"id":"709044004","label":"Chronic kidney disease"},{"id":"236425005","label":"Chronic renal impairment"}]},{"unsatisfiable":false,"equivalentConcepts":[{"id":"709504001","label":"Fusion of thoracic spine"},{"id":"41434004","label":"Dorsal spinal fusion"}]}]}';
-        
-    $scope.relationshipChanges = '{"items":[{"changeNature":"INFERRED","sourceId":"67705691006","typeId":"260686004","destinationId":"129264002","destinationNegated":false,"group":0,"unionGroup":0,"modifier":"EXISTENTIAL"}],"offset":0,"limit":50,"total":1}';
     
     MatrixService.getTemplate(sharedVariablesService.getTemplateName()).then(function(data) {
             $scope.templateName = data.data.name;
@@ -171,11 +170,13 @@ angular.module( 'templateBasedAuthoring.matrix', [
         s4() + '-' + s4() + s4() + s4();
     }
     $scope.saveWork = function(){
+        $scope.inProgress = true;
         MatrixService.saveWork($scope.templateName, $scope.work).then(function(data){
             $scope.saved = true;
             $scope.workId = data.data.name;
             MatrixService.workValidation($scope.templateName, data.data.name).then(function(innerData){
                 $scope.validationErrors = innerData.data;
+                $scope.inProgress = false;
                 if(innerData.data.anyError === false)
                 {
                     $scope.validationFailed = false;
@@ -223,13 +224,16 @@ angular.module( 'templateBasedAuthoring.matrix', [
     };
     
     $scope.commitWork = function(){
+        $scope.inProgress = true;
         MatrixService.commitWork($scope.templateName, $scope.workId).then(function(data){
             $scope.taskId = data.data.taskId;
             $scope.committed = true;
+            $scope.inProgress = false;
         });
     };
     
     $scope.classifyWork = function(){
+        $scope.inProgress = true;
         MatrixService.startClassification($scope.taskId).then(function(data){
             var location = data.headers('Location');
             $scope.classifactionJobId = location.replace(/^.*\/(.*)$/, "$1");
@@ -259,12 +263,13 @@ angular.module( 'templateBasedAuthoring.matrix', [
         var jsonData = {};
         var jsonDataTwo = {};
         MatrixService.getEquivalentConcepts($scope.classifactionJobId, $scope.taskId).then(function(data){
-                $scope.equivalenceReport = data.data;
+                $scope.equivalenceReport = data.data.items;
             });
         MatrixService.getRelationshipChanges($scope.classifactionJobId, $scope.taskId).then(function(data){
                 $scope.relationshipChangeReport = data.data.items;
             });
         $scope.classified = true;
+        $scope.inProgress = false;
     };
 
 	function Output(msg) {
