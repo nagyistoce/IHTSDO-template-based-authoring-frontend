@@ -107,6 +107,11 @@ angular.module( 'templateBasedAuthoring.matrix', [
     $scope.validationFailed = false;
     $scope.errors = {};
     $scope.objectOrder = [];
+    
+    $scope.equivalenceTest = '{"items":[{"unsatisfiable":false,"equivalentConcepts":[{"id":"709044004","label":"Chronic kidney disease"},{"id":"236425005","label":"Chronic renal impairment"}]},{"unsatisfiable":false,"equivalentConcepts":[{"id":"709504001","label":"Fusion of thoracic spine"},{"id":"41434004","label":"Dorsal spinal fusion"}]}]}';
+        
+    $scope.relationshipChanges = '{"items":[{"changeNature":"INFERRED","sourceId":"67705691006","typeId":"260686004","destinationId":"129264002","destinationNegated":false,"group":0,"unionGroup":0,"modifier":"EXISTENTIAL"}],"offset":0,"limit":50,"total":1}';
+    
     MatrixService.getTemplate(sharedVariablesService.getTemplateName()).then(function(data) {
             $scope.templateName = data.data.name;
             MatrixService.getLogicalModel(data.data.logicalModelName).then(function(innerData) {
@@ -257,7 +262,7 @@ angular.module( 'templateBasedAuthoring.matrix', [
                 $scope.equivalenceReport = data.data;
             });
         MatrixService.getRelationshipChanges($scope.classifactionJobId, $scope.taskId).then(function(data){
-                $scope.relationshipChangeReport = data.data;
+                $scope.relationshipChangeReport = data.data.items;
             });
         $scope.classified = true;
     };

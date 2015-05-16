@@ -131,8 +131,30 @@ angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($te
     "        </br>\n" +
     "        <div>\n" +
     "            Relationship Changes Report:\n" +
-    "            {{relationshipChangeReport | prettyJSON}}\n" +
     "        </div>\n" +
+    "        <table ng-if=\"classified\" class=\"table table-striped\">\n" +
+    "            <tr>\n" +
+    "                <th>Nature of Change</th>\n" +
+    "                <th>Source Id</th>\n" +
+    "                <th>Type Id</th>\n" +
+    "                <th>Destination Id</th>\n" +
+    "                <th>Destination Negated</th>\n" +
+    "                <th>Group</th>\n" +
+    "                <th>Union Group</th>\n" +
+    "                <th>Modifier</th>\n" +
+    "            </tr>\n" +
+    "            <tr ng-repeat=\"item in relationshipChangeReport\">\n" +
+    "                <td>{{item.changeNature}}</td>\n" +
+    "                <td>{{item.sourceId}}</td>\n" +
+    "                <td>{{item.typeId}}</td>\n" +
+    "                <td>{{item.destinationId}}</td>\n" +
+    "                <td>{{item.destinationNegated}}</td>\n" +
+    "                <td>{{item.group}}</td>\n" +
+    "                <td>{{item.unionGroup}}</td>\n" +
+    "                <td>{{item.modifier}}</td>\n" +
+    "            </tr>\n" +
+    "        </table>\n" +
+    "        \n" +
     "        </br>\n" +
     "    </div>\n" +
     "    \n" +

@@ -62,8 +62,30 @@
         </br>
         <div>
             Relationship Changes Report:
-            {{relationshipChangeReport | prettyJSON}}
         </div>
+        <table ng-if="classified" class="table table-striped">
+            <tr>
+                <th>Nature of Change</th>
+                <th>Source Id</th>
+                <th>Type Id</th>
+                <th>Destination Id</th>
+                <th>Destination Negated</th>
+                <th>Group</th>
+                <th>Union Group</th>
+                <th>Modifier</th>
+            </tr>
+            <tr ng-repeat="item in relationshipChangeReport">
+                <td>{{item.changeNature}}</td>
+                <td>{{item.sourceId}}</td>
+                <td>{{item.typeId}}</td>
+                <td>{{item.destinationId}}</td>
+                <td>{{item.destinationNegated}}</td>
+                <td>{{item.group}}</td>
+                <td>{{item.unionGroup}}</td>
+                <td>{{item.modifier}}</td>
+            </tr>
+        </table>
+        
         </br>
     </div>
     
