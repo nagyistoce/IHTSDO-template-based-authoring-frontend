@@ -53,6 +53,13 @@ angular.module( 'templateBasedAuthoring.matrix', [
                         return response;
                     });
             },
+        updateWork: function (templateName, work, workId) {
+                return $http.put(apiEndpoint +'templates/' + templateName + '/work/' + workId, work, {
+                        headers: { 'Content-Type': 'application/json; charset=UTF-8'}
+                    }).then(function(response) {
+                        return response;
+                    });
+            },
         commitWork: function (templateName, workId) {
                 return $http.post(apiEndpoint + 'templates/' + templateName + '/work/' + workId + '/commit').then(function(response) {
                         return response;
@@ -108,8 +115,7 @@ angular.module( 'templateBasedAuthoring.matrix', [
     $scope.errors = {};
     $scope.objectOrder = [];
     $scope.inProgress = false;
-    
-    $scope.equivalenceTest = '{"items":[{"unsatisfiable":false,"equivalentConcepts":[{"id":"709044004","label":"Chronic kidney disease"},{"id":"236425005","label":"Chronic renal impairment"}]},{"unsatisfiable":false,"equivalentConcepts":[{"id":"709504001","label":"Fusion of thoracic spine"},{"id":"41434004","label":"Dorsal spinal fusion"}]}]}';
+    $scope.workId = null;
     
     MatrixService.getTemplate(sharedVariablesService.getTemplateName()).then(function(data) {
             $scope.templateName = data.data.name;
@@ -171,24 +177,46 @@ angular.module( 'templateBasedAuthoring.matrix', [
     }
     $scope.saveWork = function(){
         $scope.inProgress = true;
-        MatrixService.saveWork($scope.templateName, $scope.work).then(function(data){
-            $scope.saved = true;
-            $scope.workId = data.data.name;
-            MatrixService.workValidation($scope.templateName, data.data.name).then(function(innerData){
-                $scope.validationErrors = innerData.data;
-                $scope.inProgress = false;
-                if(innerData.data.anyError === false)
-                {
-                    $scope.validationFailed = false;
-                    $scope.validationPassed = true;   
-                }
-                else{
-                    $scope.renderErrors();
-                    $scope.validationPassed = false; 
-                    $scope.validationFailed = true;
-                }
+        $scope.save = false;
+        if($scope.workId == null){
+            MatrixService.saveWork($scope.templateName, $scope.work).then(function(data){
+                $scope.saved = true;
+                $scope.workId = data.data.name;
+                MatrixService.workValidation($scope.templateName, data.data.name).then(function(innerData){
+                    $scope.validationErrors = innerData.data;
+                    $scope.inProgress = false;
+                    if(innerData.data.anyError === false)
+                    {
+                        $scope.validationFailed = false;
+                        $scope.validationPassed = true;   
+                    }
+                    else{
+                        $scope.renderErrors();
+                        $scope.validationPassed = false; 
+                        $scope.validationFailed = true;
+                    }
+                });
             });
-        });
+        }
+        else{
+            MatrixService.updateWork($scope.templateName, $scope.work, $scope.workId).then(function(data){
+                $scope.saved = true;
+                MatrixService.workValidation($scope.templateName, $scope.workId).then(function(innerData){
+                    $scope.validationErrors = innerData.data;
+                    $scope.inProgress = false;
+                    if(innerData.data.anyError === false)
+                    {
+                        $scope.validationFailed = false;
+                        $scope.validationPassed = true;   
+                    }
+                    else{
+                        $scope.renderErrors();
+                        $scope.validationPassed = false; 
+                        $scope.validationFailed = true;
+                    }
+                });
+            });   
+        }
     };
     
     function isEmpty(obj) {
