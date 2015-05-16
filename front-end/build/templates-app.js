@@ -146,7 +146,7 @@ angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($te
     "            Equivalence Report By Concept (matrix Row) (table per equivalance):\n" +
     "        </div>\n" +
     "        <div class=\"col-md-12 row\" ng-repeat=\"item in equivalenceReport\">\n" +
-    "            <table class=\"col-md-3 table table-striped\" ng-repeat=\"row in item.equivalentConcepts\">\n" +
+    "            <table class=\"col-md-3\" ng-repeat=\"row in item.equivalentConcepts\">\n" +
     "                <tr>\n" +
     "                    <th>Id</th>\n" +
     "                    <th>Label</th>\n" +
