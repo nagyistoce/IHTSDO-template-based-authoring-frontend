@@ -157,7 +157,17 @@ angular.module( 'templateBasedAuthoring.createModel', [
         });
     };
     
+    function guid() {
+      function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+          .toString(16)
+          .substring(1);
+      }
+      return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+        s4() + '-' + s4() + s4() + s4();
+    }
     $scope.generateMatrix = function() {
+        
         ModelService.saveTemplate($scope.lexicalJsonData.name, $scope.logicalJsonData.name, "Test");
         sharedVariablesService.setTemplateName("Test");
         $location.path('/matrix');

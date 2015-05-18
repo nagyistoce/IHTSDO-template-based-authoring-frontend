@@ -68,6 +68,24 @@ angular.module("createModel/createModel.tpl.html", []).run(["$templateCache", fu
 angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("matrix/matrix.tpl.html",
     "<h1 style=\"margin-left:15px;\">Matrix</h1>\n" +
+    "<div ng-if=\"inProgress\" class=\"backgroundCover\">\n" +
+    "    <div class=\"spinnerContainer\">\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "      <div class=\"thing\"></div>\n" +
+    "    </div>\n" +
+    "</div>\n" +
+    "\n" +
+    "\n" +
     "<div class=\"col-md-12 row\">\n" +
     "    <form id=\"upload\" onsubmit=\"init()\" method=\"POST\" enctype=\"multipart/form-data\">\n" +
     "        <fieldset>\n" +
@@ -93,26 +111,82 @@ angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($te
     "                <th ng-repeat=\"(key, value) in headers track by $index\">{{value}}</th>\n" +
     "            </tr>\n" +
     "            <tr ng-repeat=\"item in results\">\n" +
-    "                <td>{{item.ParentConceptID}}</td>\n" +
-    "                <td ng-repeat=\"(key, value) in unParsedHeaders track by $index\">{{item[value]}}</td>\n" +
+    "                <td ng-class=\"retrieveClass('parentConceptID')\" >\n" +
+    "                    <span tooltip=\"{{errors['parentConceptID']}}\">{{item.ParentConceptID}}</span>\n" +
+    "                </td>\n" +
+    "                <td ng-class=\"retrieveClass(value)\" ng-repeat=\"(key, value) in unParsedHeaders track by $index\">\n" +
+    "                    <span tooltip=\"{{errors[value]}}\">{{item[value]}}</span>\n" +
+    "                </td>\n" +
     "            </tr>\n" +
     "    </table>\n" +
     "</div>\n" +
     "<div class=\"col-md-12 row\">\n" +
     "    <button style=\"margin-right:10px\" ng-disabled=\"!loaded\" class=\"btn btn-primary col-md-2\" ng-click=\"saveWork()\">Save and Validate Work</button>\n" +
-    "    <button style=\"margin-right:10px\" ng-disabled=\"!validationPassed\" class=\"btn btn-primary col-md-2\" ng-click=\"commitWork()\">Commit Work</button>\n" +
+    "    <button style=\"margin-right:10px\" ng-disabled=\"!validationPassed && committed\" class=\"btn btn-primary col-md-2\" ng-click=\"commitWork()\">Commit Work</button>\n" +
     "    <button style=\"margin-right:10px\" ng-disabled=\"!committed\" class=\"btn btn-primary col-md-2\" ng-click=\"classifyWork()\">Classify Work</button>\n" +
     "</div>\n" +
     "<div class=\"col-md-12 row\">\n" +
     "    <div ng-if=\"validationPassed\">\n" +
     "        Work Has been saved and Successfully passed Validation.    \n" +
     "    </div>\n" +
+    "    </br>\n" +
     "    <div ng-if=\"validationFailed\">\n" +
-    "        Work Has been saved but failed Validation:\n" +
-    "        {{validationErrors}}\n" +
+    "        Work Has been saved but failed Validation\n" +
     "    </div>\n" +
+    "    </br>\n" +
     "    <div ng-if=\"committed\">\n" +
     "        Your work has been Committed. The Task Id is {{taskId}}    \n" +
     "    </div>\n" +
+    "    </br>\n" +
+    "</div>\n" +
+    "\n" +
+    "<div class=\"col-md-12 row\">\n" +
+    "    <div ng-if=\"classified\">  \n" +
+    "        <div>\n" +
+    "            Equivalence Report By Concept (matrix Row) (table per equivalance):\n" +
+    "        </div>\n" +
+    "        <div class=\"col-md-12 row\" ng-repeat=\"item in equivalenceReport\">\n" +
+    "            <table class=\"col-md-3\" ng-repeat=\"row in item.equivalentConcepts\">\n" +
+    "                <tr>\n" +
+    "                    <th>Id</th>\n" +
+    "                    <th>Label</th>\n" +
+    "                </tr>\n" +
+    "                <tr>\n" +
+    "                    <td>{{row.id}}</td>\n" +
+    "                    <td>{{row.label}}</td>\n" +
+    "                </tr>\n" +
+    "            </table>\n" +
+    "            </br>\n" +
+    "        </div>\n" +
+    "        </br>\n" +
+    "        <div>\n" +
+    "            Relationship Changes Report:\n" +
+    "        </div>\n" +
+    "        <table ng-if=\"classified\" class=\"table table-striped\">\n" +
+    "            <tr>\n" +
+    "                <th>Nature of Change</th>\n" +
+    "                <th>Source Id</th>\n" +
+    "                <th>Type Id</th>\n" +
+    "                <th>Destination Id</th>\n" +
+    "                <th>Destination Negated</th>\n" +
+    "                <th>Group</th>\n" +
+    "                <th>Union Group</th>\n" +
+    "                <th>Modifier</th>\n" +
+    "            </tr>\n" +
+    "            <tr ng-repeat=\"item in relationshipChangeReport\">\n" +
+    "                <td>{{item.changeNature}}</td>\n" +
+    "                <td>{{item.sourceId}}</td>\n" +
+    "                <td>{{item.typeId}}</td>\n" +
+    "                <td>{{item.destinationId}}</td>\n" +
+    "                <td>{{item.destinationNegated}}</td>\n" +
+    "                <td>{{item.group}}</td>\n" +
+    "                <td>{{item.unionGroup}}</td>\n" +
+    "                <td>{{item.modifier}}</td>\n" +
+    "            </tr>\n" +
+    "        </table>\n" +
+    "        \n" +
+    "        </br>\n" +
+    "    </div>\n" +
+    "    \n" +
     "</div>");
 }]);

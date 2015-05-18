@@ -1,5 +1,5 @@
 angular.module( 'templateBasedAuthoring.matrix', [
-  'ui.router'
+  'ui.router', 'ui.bootstrap'
 ])
 
 .config(function config( $stateProvider ) {
@@ -13,6 +13,13 @@ angular.module( 'templateBasedAuthoring.matrix', [
     },
     data:{ pageTitle: 'Matrix' }
   });
+})
+
+.filter('prettyJSON', function () {
+    function syntaxHighlight(json) {
+      return JSON ? JSON.stringify(json, null, '  ') : 'your browser doesnt support JSON so cant pretty print';
+    }
+    return syntaxHighlight;
 })
 
 .service('MatrixService', ['$http', function ($http) {
@@ -46,6 +53,13 @@ angular.module( 'templateBasedAuthoring.matrix', [
                         return response;
                     });
             },
+        updateWork: function (templateName, work, workId) {
+                return $http.put(apiEndpoint +'templates/' + templateName + '/work/' + workId, work, {
+                        headers: { 'Content-Type': 'application/json; charset=UTF-8'}
+                    }).then(function(response) {
+                        return response;
+                    });
+            },
         commitWork: function (templateName, workId) {
                 return $http.post(apiEndpoint + 'templates/' + templateName + '/work/' + workId + '/commit').then(function(response) {
                         return response;
@@ -70,11 +84,26 @@ angular.module( 'templateBasedAuthoring.matrix', [
                     }).then(function(response) {
                         return response;
                     });
-            }
+            },
+        checkClassificationResult: function (classifierId, taskId) {
+                return $http.get(snowowlEndpoint + 'MAIN/tasks/' + taskId + '/classifications/' + classifierId ).then(function(response) {
+                        return response;
+                    });
+        },
+        getEquivalentConcepts: function (classifierId, taskId) {
+                return $http.get(snowowlEndpoint + 'MAIN/tasks/' + taskId + '/classifications/' + classifierId + '/equivalent-concepts').then(function(response) {
+                        return response;
+                    });
+        },
+        getRelationshipChanges: function (classifierId, taskId) {
+                return $http.get(snowowlEndpoint + 'MAIN/tasks/' + taskId + '/classifications/' + classifierId + '/relationship-changes').then(function(response) {
+                        return response;
+                    });
+        }
     };
 }])
 
-.controller( 'MatrixCtrl', ['$scope', '$filter', 'MatrixService', 'sharedVariablesService', 'snowowlService', function matrixCtrl($scope, $filter, MatrixService, sharedVariablesService, snowowlService) {
+.controller( 'MatrixCtrl', ['$scope', '$filter', 'MatrixService', 'sharedVariablesService', 'snowowlService', '$timeout', '$window', function matrixCtrl($scope, $filter, MatrixService, sharedVariablesService, snowowlService, $timeout, $window) {
     $scope.headers = [];
     $scope.loaded = false;
     $scope.results = [];
@@ -83,6 +112,11 @@ angular.module( 'templateBasedAuthoring.matrix', [
     $scope.work = {};
     $scope.validationPassed = false;
     $scope.validationFailed = false;
+    $scope.errors = {};
+    $scope.objectOrder = [];
+    $scope.inProgress = false;
+    $scope.workId = null;
+    
     MatrixService.getTemplate(sharedVariablesService.getTemplateName()).then(function(data) {
             $scope.templateName = data.data.name;
             MatrixService.getLogicalModel(data.data.logicalModelName).then(function(innerData) {
@@ -117,6 +151,7 @@ angular.module( 'templateBasedAuthoring.matrix', [
         }
       });
     }
+    
     $scope.getName = function(id){
         snowowlService.getConceptName(id).then(function(data) {
                     var index = $scope.headers.indexOf(id);
@@ -141,35 +176,128 @@ angular.module( 'templateBasedAuthoring.matrix', [
         s4() + '-' + s4() + s4() + s4();
     }
     $scope.saveWork = function(){
-        MatrixService.saveWork($scope.templateName, $scope.work).then(function(data){
-            $scope.saved = true;
-            $scope.workId = data.data.name;
-            MatrixService.workValidation($scope.templateName, data.data.name).then(function(innerData){
-                $scope.validationErrors = innerData.data;
-                if(innerData.data.anyError === false)
-                {
-                    $scope.validationFailed = false;
-                    $scope.validationPassed = true;   
-                }
-                else{
-                    $scope.validationPassed = false; 
-                    $scope.validationFailed = true;
-                }
+        $scope.inProgress = true;
+        $scope.save = false;
+        if($scope.workId == null){
+            MatrixService.saveWork($scope.templateName, $scope.work).then(function(data){
+                $scope.saved = true;
+                $scope.workId = data.data.name;
+                MatrixService.workValidation($scope.templateName, data.data.name).then(function(innerData){
+                    $scope.validationErrors = innerData.data;
+                    $scope.inProgress = false;
+                    if(innerData.data.anyError === false)
+                    {
+                        $scope.validationFailed = false;
+                        $scope.validationPassed = true;   
+                    }
+                    else{
+                        $scope.renderErrors();
+                        $scope.validationPassed = false; 
+                        $scope.validationFailed = true;
+                    }
+                });
             });
-        });
+        }
+        else{
+            MatrixService.updateWork($scope.templateName, $scope.work, $scope.workId).then(function(data){
+                $scope.saved = true;
+                MatrixService.workValidation($scope.templateName, $scope.workId).then(function(innerData){
+                    $scope.validationErrors = innerData.data;
+                    $scope.inProgress = false;
+                    if(innerData.data.anyError === false)
+                    {
+                        $scope.validationFailed = false;
+                        $scope.validationPassed = true;   
+                    }
+                    else{
+                        $scope.renderErrors();
+                        $scope.validationPassed = false; 
+                        $scope.validationFailed = true;
+                    }
+                });
+            });   
+        }
     };
+    
+    function isEmpty(obj) {
+        return Object.keys(obj).length === 0;
+    }
+    
+    $scope.renderErrors = function(){
+        if($scope.validationErrors.conceptResults[0].isARelationshipsMessages[0] != null)
+        {
+            var parentError = $scope.validationErrors.conceptResults[0].isARelationshipsMessages[0];
+            $scope.errors.parentConceptID = parentError;
+        }
+        var arrays = $scope.validationErrors.conceptResults[0].attributeGroupsMessages;
+        var merged = [];
+        merged = merged.concat.apply(merged, arrays);
+        for(var i = 0; i < $scope.objectOrder.length; i++)
+        {
+            if(isEmpty(merged[i]))
+            {
+
+            }
+            else{
+                $scope.errors[$scope.objectOrder[i]] = merged[i].valueMessage;
+            }
+        }
+    };
+    
+    $scope.retrieveClass = function(id){
+        if($scope.errors.hasOwnProperty(id))
+        {
+            return "error";
+        }
+    };
+    
     $scope.commitWork = function(){
+        $scope.inProgress = true;
         MatrixService.commitWork($scope.templateName, $scope.workId).then(function(data){
             $scope.taskId = data.data.taskId;
             $scope.committed = true;
+            $scope.inProgress = false;
         });
     };
+    
     $scope.classifyWork = function(){
+        $scope.inProgress = true;
         MatrixService.startClassification($scope.taskId).then(function(data){
             var location = data.headers('Location');
             $scope.classifactionJobId = location.replace(/^.*\/(.*)$/, "$1");
-            console.log($scope.classifactionJobId);
+            $scope.pollForResult();
         });
+    };
+    
+    $scope.pollForResult = function() {
+        $timeout(function() {
+            MatrixService.checkClassificationResult($scope.classifactionJobId, $scope.taskId).then(function(data){
+                if(data.data.status == "COMPLETED")
+                {
+                    $scope.validationResultsComplete = true;
+                    return;
+                }
+            });
+            if($scope.validationResultsComplete === true)
+            {
+                $scope.generateClassifierResults();
+                return;
+            }
+            $scope.pollForResult();
+        }, 20000);
+    };
+    
+    $scope.generateClassifierResults = function() {
+        var jsonData = {};
+        var jsonDataTwo = {};
+        MatrixService.getEquivalentConcepts($scope.classifactionJobId, $scope.taskId).then(function(data){
+                $scope.equivalenceReport = data.data.items;
+            });
+        MatrixService.getRelationshipChanges($scope.classifactionJobId, $scope.taskId).then(function(data){
+                $scope.relationshipChangeReport = data.data.items;
+            });
+        $scope.classified = true;
+        $scope.inProgress = false;
     };
 
 	function Output(msg) {
@@ -280,6 +408,7 @@ angular.module( 'templateBasedAuthoring.matrix', [
     $scope.parseAttributes = function(object, input){
         angular.forEach(object, function(item, name) {
                 object[name] = input[0][name];
+                $scope.objectOrder.push(name);
             }, object);
     };
     
