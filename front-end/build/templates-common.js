@@ -3,7 +3,7 @@ angular.module('templates-common', ['views/appHeader.tpl.html']);
 angular.module("views/appHeader.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("views/appHeader.tpl.html",
     "<nav class=\"navbar navbar-default\">\n" +
-    "	<div class=\"container\">\n" +
+    "\n" +
     "		<div class=\"navbar-header\">\n" +
     "        \n" +
     "        <a class=\"navbar-brand\" href=\"#\" ng-href=\"#/\">\n" +
@@ -12,18 +12,28 @@ angular.module("views/appHeader.tpl.html", []).run(["$templateCache", function($
     "        </a>\n" +
     "     \n" +
     "		</div>\n" +
-    "		<ul id=\"topNav\"  class=\"nav navbar-nav navbar-right\">\n" +
+    "		<ul id=\"topNav\"  class=\"nav navbar-nav navbar-right pull-left\">\n" +
     "			<li>\n" +
     "				<a href=\"#/\">Create New Model</a>\n" +
+    "			</li>\n" +
+    "			\n" +
+    "		</ul>\n" +
+    "        \n" +
+    "	<ul id=\"identity\"  class=\"nav navbar-nav navbar-right pull-right\">\n" +
+    "			<li>\n" +
+    "				<a href=\"#/register\">\n" +
+    "					<span>Register</span>\n" +
+    "					\n" +
+    "				</a>\n" +
     "			</li>\n" +
     "			<li>\n" +
     "				<a href=\"#/login\">\n" +
     "					<span>Login</span>\n" +
-    "					<i class=\"fa fa-caret-right\"></i>\n" +
+    "					\n" +
     "				</a>\n" +
     "			</li>\n" +
     "		</ul>\n" +
-    "	</div>\n" +
+    "        \n" +
     "</nav>\n" +
     "");
 }]);
