@@ -122,7 +122,7 @@ angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($te
     "</div>\n" +
     "<div class=\"col-md-12 row\">\n" +
     "    <button style=\"margin-right:10px\" ng-disabled=\"!loaded\" class=\"btn btn-primary col-md-2\" ng-click=\"saveWork()\">Save and Validate Work</button>\n" +
-    "    <button style=\"margin-right:10px\" ng-disabled=\"!validationPassed && committed\" class=\"btn btn-primary col-md-2\" ng-click=\"commitWork()\">Commit Work</button>\n" +
+    "    <button style=\"margin-right:10px\" ng-disabled=\"!validationPassed && !committed\" class=\"btn btn-primary col-md-2\" ng-click=\"commitWork()\">Commit Work</button>\n" +
     "    <button style=\"margin-right:10px\" ng-disabled=\"!committed\" class=\"btn btn-primary col-md-2\" ng-click=\"classifyWork()\">Classify Work</button>\n" +
     "</div>\n" +
     "<div class=\"col-md-12 row\">\n" +

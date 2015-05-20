@@ -53,7 +53,7 @@
 </div>
 <div class="col-md-12 row">
     <button style="margin-right:10px" ng-disabled="!loaded" class="btn btn-primary col-md-2" ng-click="saveWork()">Save and Validate Work</button>
-    <button style="margin-right:10px" ng-disabled="!validationPassed && committed" class="btn btn-primary col-md-2" ng-click="commitWork()">Commit Work</button>
+    <button style="margin-right:10px" ng-disabled="!validationPassed && !committed" class="btn btn-primary col-md-2" ng-click="commitWork()">Commit Work</button>
     <button style="margin-right:10px" ng-disabled="!committed" class="btn btn-primary col-md-2" ng-click="classifyWork()">Classify Work</button>
 </div>
 <div class="col-md-12 row">
