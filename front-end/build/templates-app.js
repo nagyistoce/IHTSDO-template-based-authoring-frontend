@@ -69,19 +69,21 @@ angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($te
   $templateCache.put("matrix/matrix.tpl.html",
     "<h1 style=\"margin-left:15px;\">Matrix</h1>\n" +
     "<div ng-if=\"inProgress\" class=\"backgroundCover\">\n" +
-    "    <div class=\"spinnerContainer\">\n" +
-    "      <div class=\"thing\"></div>\n" +
-    "      <div class=\"thing\"></div>\n" +
-    "      <div class=\"thing\"></div>\n" +
-    "      <div class=\"thing\"></div>\n" +
-    "      <div class=\"thing\"></div>\n" +
-    "      <div class=\"thing\"></div>\n" +
-    "      <div class=\"thing\"></div>\n" +
-    "      <div class=\"thing\"></div>\n" +
-    "      <div class=\"thing\"></div>\n" +
-    "      <div class=\"thing\"></div>\n" +
-    "      <div class=\"thing\"></div>\n" +
-    "      <div class=\"thing\"></div>\n" +
+    "    <div class=\"loader\">Loading...</div>\n" +
+    "    <div ng-if=\"saveProgress\" class=\"center\">\n" +
+    "        Your work is being saved and validated. This may take up to 30 seconds.\n" +
+    "        </br>\n" +
+    "        Please do not refresh or navigate away from this page.\n" +
+    "    </div>\n" +
+    "    <div ng-if=\"committProgress\" class=\"center\">\n" +
+    "        Your work is being committed. This may take up to a minute.\n" +
+    "        </br>\n" +
+    "        Please do not refresh or navigate away from this page.\n" +
+    "    </div>\n" +
+    "    <div ng-if=\"classifyProgress\" class=\"center\">\n" +
+    "        Your work is being classified. This may take a few minutes.\n" +
+    "        </br>\n" +
+    "        Please do not refresh or navigate away from this page.\n" +
     "    </div>\n" +
     "</div>\n" +
     "\n" +
@@ -127,15 +129,15 @@ angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($te
     "</div>\n" +
     "<div class=\"col-md-12 row\">\n" +
     "    <div ng-if=\"validationPassed\">\n" +
-    "        Work Has been saved and Successfully passed Validation.    \n" +
+    "        Work has been saved and successfully passed validation.    \n" +
     "    </div>\n" +
     "    </br>\n" +
     "    <div ng-if=\"validationFailed\">\n" +
-    "        Work Has been saved but failed Validation\n" +
+    "        Work has been saved but failed validation\n" +
     "    </div>\n" +
     "    </br>\n" +
     "    <div ng-if=\"committed\">\n" +
-    "        Your work has been Committed. The Task Id is {{taskId}}    \n" +
+    "        Your work has been committed. The task id is {{taskId}}    \n" +
     "    </div>\n" +
     "    </br>\n" +
     "</div>\n" +

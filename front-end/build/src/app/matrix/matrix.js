@@ -177,6 +177,7 @@ angular.module( 'templateBasedAuthoring.matrix', [
     }
     $scope.saveWork = function(){
         $scope.inProgress = true;
+        $scope.saveProgress = true;
         $scope.save = false;
         if($scope.workId == null){
             MatrixService.saveWork($scope.templateName, $scope.work).then(function(data){
@@ -185,6 +186,7 @@ angular.module( 'templateBasedAuthoring.matrix', [
                 MatrixService.workValidation($scope.templateName, data.data.name).then(function(innerData){
                     $scope.validationErrors = innerData.data;
                     $scope.inProgress = false;
+                    $scope.saveProgress = false;
                     if(innerData.data.anyError === false)
                     {
                         $scope.validationFailed = false;
@@ -204,6 +206,7 @@ angular.module( 'templateBasedAuthoring.matrix', [
                 MatrixService.workValidation($scope.templateName, $scope.workId).then(function(innerData){
                     $scope.validationErrors = innerData.data;
                     $scope.inProgress = false;
+                    $scope.saveProgress = false;
                     if(innerData.data.anyError === false)
                     {
                         $scope.validationFailed = false;
@@ -253,14 +256,17 @@ angular.module( 'templateBasedAuthoring.matrix', [
     
     $scope.commitWork = function(){
         $scope.inProgress = true;
+        $scope.committProgress = true;
         MatrixService.commitWork($scope.templateName, $scope.workId).then(function(data){
             $scope.taskId = data.data.taskId;
             $scope.committed = true;
             $scope.inProgress = false;
+            $scope.committProgress = false;
         });
     };
     
     $scope.classifyWork = function(){
+        $scope.classifyProgress = true;
         $scope.inProgress = true;
         MatrixService.startClassification($scope.taskId).then(function(data){
             var location = data.headers('Location');
@@ -298,6 +304,7 @@ angular.module( 'templateBasedAuthoring.matrix', [
             });
         $scope.classified = true;
         $scope.inProgress = false;
+        $scope.classifyProgress = false;
     };
 
 	function Output(msg) {
@@ -367,7 +374,10 @@ angular.module( 'templateBasedAuthoring.matrix', [
         work.name = guid();
         work.taskId = "test";
         work.concepts = [];
-        var concept ={};
+        var concept = {};
+        var saveProgress = false;
+        var commitProgress = false;
+        var classifyProgress = false;
         concept.id = guid();
         concept.term = "test";
         concept.isARelationships = [];
