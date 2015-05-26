@@ -69,6 +69,11 @@ angular.module( 'templateBasedAuthoring.createModel', [
                         return response;
                     });
             },
+        getTemplate: function (name) {
+                return $http.get(apiEndpoint +'templates/' + name).then(function(response) {
+                        return response;
+                    });
+        },
         saveTemplate: function (lexicalModelName, logicalModelName, name) {
                 var json = {};
                 json.name = name;
@@ -98,6 +103,20 @@ angular.module( 'templateBasedAuthoring.createModel', [
     $scope.lexicallSuccess = false;
     $scope.lexicalJsonData = {};
 
+    //Initial load check to see if models have allready been loaded.
+    if(sharedVariablesService.getTemplateName() !== '')
+    {
+        ModelService.getTemplate(sharedVariablesService.getTemplateName()).then(function(data) {
+            ModelService.getLogicalModel(data.data.logicalModelName).then(function(innerData) {
+                $scope.logicalJsonData = innerData.data;
+            });
+            ModelService.getLexicalModel(data.data.lexicalModelName).then(function(innerData) {
+                $scope.lexicalJsonData = innerData.data;
+            });
+        });
+    }
+    
+    
     //Logical Functions
     $scope.$watch('logicalJsonData', function(json) {
         $scope.logicalJsonString = $filter('json')(json);
