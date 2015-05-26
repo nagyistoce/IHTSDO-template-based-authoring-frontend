@@ -115,8 +115,6 @@ angular.module( 'templateBasedAuthoring.createModel', [
             });
         });
     }
-    
-    
     //Logical Functions
     $scope.$watch('logicalJsonData', function(json) {
         $scope.logicalJsonString = $filter('json')(json);
