@@ -113,10 +113,10 @@ angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($te
     "                <th ng-repeat=\"(key, value) in headers track by $index\">{{value}}</th>\n" +
     "            </tr>\n" +
     "            <tr ng-repeat=\"item in results\">\n" +
-    "                <td ng-class=\"retrieveClass('parentConceptID')\" tooltip=\"{{errors['parentConceptID']}}\">\n" +
+    "                <td ng-class=\"retrieveClass('parentConceptID')\" tooltip=\"{{errors['parentConceptID']}}\" tooltip-append-to-body=\"true\">\n" +
     "                    <span >{{item.ParentConceptID}}</span>\n" +
     "                </td>\n" +
-    "                <td ng-class=\"retrieveClass(value)\" ng-repeat=\"(key, value) in unParsedHeaders track by $index\" tooltip=\"{{errors[value]}}\">\n" +
+    "                <td ng-class=\"retrieveClass(value)\" ng-repeat=\"(key, value) in unParsedHeaders track by $index\" tooltip=\"{{errors[value]}}\" tooltip-append-to-body=\"true\">\n" +
     "                    <span >{{item[value]}}</span>\n" +
     "                </td>\n" +
     "            </tr>\n" +

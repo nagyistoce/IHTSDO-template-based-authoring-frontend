@@ -44,10 +44,10 @@
                 <th ng-repeat="(key, value) in headers track by $index">{{value}}</th>
             </tr>
             <tr ng-repeat="item in results">
-                <td ng-class="retrieveClass('parentConceptID')" tooltip="{{errors['parentConceptID']}}">
+                <td ng-class="retrieveClass('parentConceptID')" tooltip="{{errors['parentConceptID']}}" tooltip-append-to-body="true">
                     <span >{{item.ParentConceptID}}</span>
                 </td>
-                <td ng-class="retrieveClass(value)" ng-repeat="(key, value) in unParsedHeaders track by $index" tooltip="{{errors[value]}}">
+                <td ng-class="retrieveClass(value)" ng-repeat="(key, value) in unParsedHeaders track by $index" tooltip="{{errors[value]}}" tooltip-append-to-body="true">
                     <span >{{item[value]}}</span>
                 </td>
             </tr>
