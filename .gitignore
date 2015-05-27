@@ -2,5 +2,4 @@
 /.project
 .*
 *.iml
-front-end/build/
 front-end/bin/
