@@ -173,6 +173,12 @@ angular.module( 'templateBasedAuthoring.createModel', [
             //sharedVariablesService.setTemplateName($scope.lexicalModelToLoad);
         });
     };
+    $scope.clearLexicalModel = function() {
+            $scope.lexicalJsonData = {};
+    };
+    $scope.clearLogicalModel = function() {
+            $scope.logicalJsonData = {};
+    };
     
     function guid() {
       function s4() {

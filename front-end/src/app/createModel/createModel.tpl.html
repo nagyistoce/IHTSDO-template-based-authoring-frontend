@@ -12,6 +12,9 @@
    <span>
         <button class="btn btn-primary" ng-click="loadLogicalModel()">Load</button>
     </span>
+     <span>
+        <button class="btn btn-primary" ng-click="clearLogicalModel()">Clear</button>
+    </span>
     <span>
     <button class="btn btn-primary" style="margin-right:10px;"ng-click="saveLogicalModel()">Save Logical Model</button>
      </span>
@@ -43,7 +46,10 @@
    <span>
         <button class="btn btn-primary" ng-click="loadLexicalModel()">Load</button>
    </span>
-    <button class="btn btn-primary style="margin-right:10px;"ng-click="saveLexicalModel()">Save Lexical Model</button>
+    <span>
+        <button class="btn btn-primary" ng-click="clearLexicalModel()">Clear</button>
+    </span>
+    <button class="btn btn-primary" style="margin-right:10px" ng-click="saveLexicalModel()">Save Lexical Model</button>
     <div class="col-md-2" ng-show="lexicalSuccess">Lexical Model Successfully Saved.</div>
 </div>
 <div class="col-md-12 row">

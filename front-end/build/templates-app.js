@@ -16,6 +16,9 @@ angular.module("createModel/createModel.tpl.html", []).run(["$templateCache", fu
     "   <span>\n" +
     "        <button class=\"btn btn-primary\" ng-click=\"loadLogicalModel()\">Load</button>\n" +
     "    </span>\n" +
+    "     <span>\n" +
+    "        <button class=\"btn btn-primary\" ng-click=\"clearLogicalModel()\">Clear</button>\n" +
+    "    </span>\n" +
     "    <span>\n" +
     "    <button class=\"btn btn-primary\" style=\"margin-right:10px;\"ng-click=\"saveLogicalModel()\">Save Logical Model</button>\n" +
     "     </span>\n" +
@@ -47,7 +50,10 @@ angular.module("createModel/createModel.tpl.html", []).run(["$templateCache", fu
     "   <span>\n" +
     "        <button class=\"btn btn-primary\" ng-click=\"loadLexicalModel()\">Load</button>\n" +
     "   </span>\n" +
-    "    <button class=\"btn btn-primary style=\"margin-right:10px;\"ng-click=\"saveLexicalModel()\">Save Lexical Model</button>\n" +
+    "    <span>\n" +
+    "        <button class=\"btn btn-primary\" ng-click=\"clearLexicalModel()\">Clear</button>\n" +
+    "    </span>\n" +
+    "    <button class=\"btn btn-primary\" style=\"margin-right:10px\" ng-click=\"saveLexicalModel()\">Save Lexical Model</button>\n" +
     "    <div class=\"col-md-2\" ng-show=\"lexicalSuccess\">Lexical Model Successfully Saved.</div>\n" +
     "</div>\n" +
     "<div class=\"col-md-12 row\">\n" +
@@ -95,7 +101,7 @@ angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($te
     "            <input type=\"hidden\" id=\"MAX_FILE_SIZE\" name=\"MAX_FILE_SIZE\" value=\"300000\" />\n" +
     "            <div>\n" +
     "                <label for=\"fileselect\">Files to upload:</label>\n" +
-    "                <input type=\"file\" id=\"fileselect\" name=\"fileselect[]\" multiple=\"multiple\" />\n" +
+    "                <input type=\"file\" accept=\"text/tab-separated-values\" id=\"fileselect\" name=\"fileselect[]\" multiple=\"multiple\" />\n" +
     "                <div id=\"filedrag\">or drop files here</div>\n" +
     "            </div>\n" +
     "            <div id=\"submitbutton\">\n" +
