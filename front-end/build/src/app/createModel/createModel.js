@@ -191,7 +191,8 @@ angular.module( 'templateBasedAuthoring.createModel', [
     }
     $scope.generateMatrix = function() {
         
-        ModelService.saveTemplate($scope.lexicalJsonData.name, $scope.logicalJsonData.name, "Test");
+        ModelService.saveTemplate($scope.lexicalJsonData.modelName, $scope.logicalJsonData.modelName, "Test");
+        console.log("$scope.lexicalJsonData.modelName", $scope.lexicalJsonData.modelName);
         sharedVariablesService.setTemplateName("Test");
         $location.path('/matrix');
     };

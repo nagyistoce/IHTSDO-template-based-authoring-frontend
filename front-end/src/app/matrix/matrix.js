@@ -125,12 +125,12 @@ angular.module( 'templateBasedAuthoring.matrix', [
             });
         });
     $scope.parseModel = function(model) {
-        for(var i = 0; i < model.attributeRestrictionGroups.length; i++)
+        for(var i = 0; i < model.attributes.length; i++)
         {
-            for(var j = 0; j < model.attributeRestrictionGroups[i].length; j++)
+            for(var j = 0; j < model.attributes[i].length; j++)
             {
-                $scope.headers.push(model.attributeRestrictionGroups[i][j].typeConceptId);
-                $scope.unParsedHeaders.push(model.attributeRestrictionGroups[i][j].typeConceptId);
+                $scope.headers.push(model.attributes[i][j].attribute);
+                $scope.unParsedHeaders.push(model.attributes[i][j].attribute);
             }
         }
         callServiceForEachItem();
@@ -227,12 +227,12 @@ angular.module( 'templateBasedAuthoring.matrix', [
     }
     
     $scope.renderErrors = function(){
-        if($scope.validationErrors.conceptResults[0].isARelationshipsMessages[0] != null)
+        if($scope.validationErrors.conceptResults[0].parentsMessages[0] != null)
         {
-            var parentError = $scope.validationErrors.conceptResults[0].isARelationshipsMessages[0];
+            var parentError = $scope.validationErrors.conceptResults[0].parentsMessages[0];
             $scope.errors.parentConceptID = parentError;
         }
-        var arrays = $scope.validationErrors.conceptResults[0].attributeGroupsMessages;
+        var arrays = $scope.validationErrors.conceptResults[0].attributesMessages;
         var merged = [];
         merged = merged.concat.apply(merged, arrays);
         for(var i = 0; i < $scope.objectOrder.length; i++)
@@ -380,8 +380,8 @@ angular.module( 'templateBasedAuthoring.matrix', [
         var classifyProgress = false;
         concept.id = guid();
         concept.term = "test";
-        concept.isARelationships = [];
-        concept.attributeGroups = [];
+        concept.parents = [];
+        concept.attributes = [];
         var headers = $scope.unParsedHeaders;
         var temp = {}; 
         for(var j = 0; j < headers.length; j++)
@@ -391,11 +391,11 @@ angular.module( 'templateBasedAuthoring.matrix', [
                 temp[headers[j]] = "temp";
                 if(j == (headers.length -1))
                 {
-                    concept.attributeGroups.push(temp);   
+                    concept.attributes.push(temp);   
                 }
             }
             else{
-                concept.attributeGroups.push(temp);
+                concept.attributes.push(temp);
                 temp = {};
                 temp[headers[j]] = "temp";
             }
@@ -403,13 +403,13 @@ angular.module( 'templateBasedAuthoring.matrix', [
         for(var i = 0; i < input.length; i++){
           var obj = {};
           var currentLine = input[i];
-          if (concept.isARelationships.indexOf(currentLine.ParentConceptID) == -1) {
-              concept.isARelationships.push(currentLine.ParentConceptID);
+          if (concept.parents.indexOf(currentLine.ParentConceptID) == -1) {
+              concept.parents.push(currentLine.ParentConceptID);
           }
         }
         //Loop through groups and fill in variables
-        for(var k = 0; k < concept.attributeGroups.length; k++){
-            $scope.parseAttributes(concept.attributeGroups[k], input);
+        for(var k = 0; k < concept.attributes.length; k++){
+            $scope.parseAttributes(concept.attributes[k], input);
         }
         work.concepts.push(concept);
         $scope.work = work;
