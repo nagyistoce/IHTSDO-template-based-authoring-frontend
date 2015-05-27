@@ -157,6 +157,7 @@ angular.module( 'templateBasedAuthoring.createModel', [
         } catch(e) {
             $scope.lexicalWellFormed = false;
         }
+        
     }, true);
     
     ModelService.getLexicalModelList().then(function(data) {
