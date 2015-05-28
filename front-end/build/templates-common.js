@@ -6,7 +6,7 @@ angular.module("views/appHeader.tpl.html", []).run(["$templateCache", function($
     "\n" +
     "		<div class=\"navbar-header\">\n" +
     "        \n" +
-    "        <a class=\"navbar-brand\" href=\"#\" ng-href=\"#/\">\n" +
+    "        <a class=\"navbar-brand\" ui-sref=\"createRefset\">\n" +
     "        <span> <img class=\"img-responsive\" src=\"assets/small_logo.png\" alt=\"ihtsdo-logo\"></span> \n" +
     "        <span class=\"navbar-version\">Authoring Service</span>\n" +
     "        </a>\n" +

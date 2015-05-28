@@ -10,9 +10,13 @@ angular.module( 'templateBasedAuthoring', [
     'ui.router'
 ])
 
-.config( function myAppConfig ( $stateProvider, $urlRouterProvider, $locationProvider) {
+.config( function myAppConfig ( $stateProvider, $urlRouterProvider, $locationProvider, $provide) {
     var endpoint = "https://dev-ims.ihtsdotools.org/";
     var refferer = "https://dev-term.ihtsdotools.org/authoring/";
+    $provide.decorator('$sniffer', function($delegate) {
+      $delegate.history = false;
+      return $delegate;
+    });
     $urlRouterProvider
         .otherwise('/createModel');
     $stateProvider
@@ -28,11 +32,7 @@ angular.module( 'templateBasedAuthoring', [
     .state('register', {
         url: endpoint + "/#/register" + "?serviceReferer=" + refferer
     });
-    $locationProvider.html5Mode({
-        enabled: true,
-        requireBase: true,
-        rewriteLinks: true
-    });
+    $locationProvider.html5Mode(true);
 //    .when('/logout', {
 //        redirectTo: function(){ window.location = endpoint + "/#/logout";}
 //      })
