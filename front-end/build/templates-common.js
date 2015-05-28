@@ -14,22 +14,21 @@ angular.module("views/appHeader.tpl.html", []).run(["$templateCache", function($
     "		</div>\n" +
     "		<ul id=\"topNav\"  class=\"nav navbar-nav navbar-right pull-left\">\n" +
     "			<li>\n" +
-    "				<a href=\"#/\">Create New Model</a>\n" +
+    "				<a ui-sref=\"createModel\">Create New Model</a>\n" +
     "			</li>\n" +
     "			\n" +
     "		</ul>\n" +
     "        \n" +
     "	<ul id=\"identity\"  class=\"nav navbar-nav navbar-right pull-right\">\n" +
     "			<li>\n" +
-    "				<a href=\"#/register\">\n" +
+    "				<a ui-sref=\"register\" target=\"_self\">\n" +
     "					<span>Register</span>\n" +
     "					\n" +
     "				</a>\n" +
     "			</li>\n" +
     "			<li>\n" +
-    "				<a href=\"#/login\">\n" +
+    "				<a ui-sref=\"login\" target=\"_self\">\n" +
     "					<span>Login</span>\n" +
-    "					\n" +
     "				</a>\n" +
     "			</li>\n" +
     "		</ul>\n" +

@@ -1,5 +1,5 @@
 angular.module( 'templateBasedAuthoring.createModel', [
-  'ui.router', 'JSONedit'
+  'ui.router', 'JSONedit', 'ngRoute'
 ])
 
 .config(["$stateProvider", function config( $stateProvider ) {

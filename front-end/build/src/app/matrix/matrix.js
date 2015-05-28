@@ -1,5 +1,5 @@
 angular.module( 'templateBasedAuthoring.matrix', [
-  'ui.router', 'ui.bootstrap'
+  'ui.router', 'ui.bootstrap', 'ngRoute'
 ])
 
 .config(["$stateProvider", function config( $stateProvider ) {

@@ -6,20 +6,56 @@ angular.module( 'templateBasedAuthoring', [
     'templateBasedAuthoring.sharedVariablesService',
     'templateBasedAuthoring.snowowlService',
     'templateBasedAuthoring.conceptNameFilter',
-    'ui.router' 
+    'templateBasedAuthoring.accountService',
+    'ui.router',
+    'ngRoute'
 ])
 
-.config( function myAppConfig ( $stateProvider, $urlRouterProvider) {
-  $urlRouterProvider.otherwise( '/createModel' );
+.config( function myAppConfig ( $stateProvider, $urlRouterProvider, $locationProvider) {
+    var endpoint = "https://dev-ims.ihtsdotools.org/";
+    var refferer = "https://dev-term.ihtsdotools.org/authoring/";
+    $urlRouterProvider
+        .otherwise('/createModel');
+    $stateProvider
+    .state('login', {
+        url: endpoint + "/#/login" + "?serviceReferer=" + refferer
+    })
+    .state('logout', {
+        url: endpoint + "/#/logout" + "?serviceReferer=" + refferer
+    })
+    .state('settings', {
+        url: endpoint + "/#/settings" + "?serviceReferer=" + refferer
+    })
+    .state('register', {
+        url: endpoint + "/#/register" + "?serviceReferer=" + refferer
+    });
+    $locationProvider.html5Mode({
+        enabled: true,
+        requireBase: true,
+        rewriteLinks: true
+    });
+//    .when('/logout', {
+//        redirectTo: function(){ window.location = endpoint + "/#/logout";}
+//      })
+//    .when('/settings', {
+//        redirectTo: function(){ window.location = endpoint + "/#/settings";}
+//      })
+//    .when('/register', {
+//        redirectTo: function(){ window.location = endpoint + "/#/register";}
+//      })
+    //.otherwise({ url: '/createModel' });
 })
 
 .run( function run () {
 })
 
-.controller( 'AppCtrl', function AppCtrl ( $scope, $location ) {
-  $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
+.controller( 'AppCtrl', function AppCtrl ( $scope, $location, accountService ) {
+  $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams, accountService){
     if ( angular.isDefined( toState.data.pageTitle ) ) {
-      $scope.pageTitle = toState.data.pageTitle + ' | templateBasedAuthoring' ;
+        $scope.pageTitle = toState.data.pageTitle + ' | templateBasedAuthoring' ;
+//        accountService.getAccount().then(function(data) {
+//                console.log(data);
+//            }); 
     }
   });
 });
