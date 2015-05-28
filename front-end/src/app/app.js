@@ -7,8 +7,7 @@ angular.module( 'templateBasedAuthoring', [
     'templateBasedAuthoring.snowowlService',
     'templateBasedAuthoring.conceptNameFilter',
     'templateBasedAuthoring.accountService',
-    'ui.router',
-    'ngRoute'
+    'ui.router'
 ])
 
 .config( function myAppConfig ( $stateProvider, $urlRouterProvider, $locationProvider) {

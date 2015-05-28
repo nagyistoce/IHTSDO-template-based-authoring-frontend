@@ -7,13 +7,12 @@ angular.module( 'templateBasedAuthoring', [
     'templateBasedAuthoring.snowowlService',
     'templateBasedAuthoring.conceptNameFilter',
     'templateBasedAuthoring.accountService',
-    'ui.router',
-    'ngRoute'
+    'ui.router'
 ])
 
 .config( ["$stateProvider", "$urlRouterProvider", "$locationProvider", function myAppConfig ( $stateProvider, $urlRouterProvider, $locationProvider) {
     var endpoint = "https://dev-ims.ihtsdotools.org/";
-    var refferer = "http://localhost/#/createModel";
+    var refferer = "https://dev-term.ihtsdotools.org/authoring/";
     $urlRouterProvider
         .otherwise('/createModel');
     $stateProvider
@@ -21,13 +20,13 @@ angular.module( 'templateBasedAuthoring', [
         url: endpoint + "/#/login" + "?serviceReferer=" + refferer
     })
     .state('logout', {
-        url: endpoint + "/#/logout"
+        url: endpoint + "/#/logout" + "?serviceReferer=" + refferer
     })
     .state('settings', {
-        url: endpoint + "/#/settings"
+        url: endpoint + "/#/settings" + "?serviceReferer=" + refferer
     })
     .state('register', {
-        url: endpoint + "/#/register"
+        url: endpoint + "/#/register" + "?serviceReferer=" + refferer
     });
     $locationProvider.html5Mode({
         enabled: true,
