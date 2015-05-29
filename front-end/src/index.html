@@ -2,13 +2,13 @@
 <html ng-app="templateBasedAuthoring" ng-controller="AppCtrl">
   <head>
     <title ng-bind="pageTitle"></title>
-
+    <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- font awesome from BootstrapCDN -->
-    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-      <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
-<link href='http://fonts.googleapis.com/css?family=Lato|Rokkitt' rel='stylesheet' type='text/css'>
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Lato|Rokkitt' rel='stylesheet' type='text/css'>
     <!-- compiled CSS --><% styles.forEach( function ( file ) { %>
     <link rel="stylesheet" type="text/css" href="<%= file %>" /><% }); %>
 
@@ -31,10 +31,8 @@
     <footer class="footer">
      
         <div class="container">
-            <a href="/privacy-statement">Privacy   </a>  
-            <a href="/terms-and-conditions">Terms and conditions   </a>   
-            <a href="/cookie-policy">Cookie policy   </a>   
-            <span class="pull-right"><a href="http://www.ihtsdo.org/" target="_blank">Copyright IHTSDO 2014</a></span>
+            <span class="pull-left ihtsdo-copy"> 
+     <a href="http://www.ihtsdo.org/" target="_blank">&copy; Copyright IHTSDO 2015</a> </span>
           </div>
     </footer>
   </body>

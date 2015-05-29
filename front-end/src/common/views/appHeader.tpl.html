@@ -1,23 +1,32 @@
 <nav class="navbar navbar-default">
-	<div class="container">
+
 		<div class="navbar-header">
         
-        <a class="navbar-brand" href="#" ng-href="#/">
+        <a class="navbar-brand" ui-sref="createRefset">
         <span> <img class="img-responsive" src="assets/small_logo.png" alt="ihtsdo-logo"></span> 
         <span class="navbar-version">Authoring Service</span>
         </a>
      
 		</div>
-		<ul id="topNav"  class="nav navbar-nav navbar-right">
+		<ul id="topNav"  class="nav navbar-nav navbar-right pull-left">
 			<li>
-				<a href="#/">Create New Model</a>
+				<a ui-sref="createModel">Create New Model</a>
+			</li>
+			
+		</ul>
+        
+	<ul id="identity"  class="nav navbar-nav navbar-right pull-right">
+			<li>
+				<a ui-sref="register" target="_self">
+					<span>Register</span>
+					
+				</a>
 			</li>
 			<li>
-				<a href="#/login">
+				<a ui-sref="login" target="_self">
 					<span>Login</span>
-					<i class="fa fa-caret-right"></i>
 				</a>
 			</li>
 		</ul>
-	</div>
+        
 </nav>

@@ -1,18 +1,20 @@
 <h1 style="margin-left:15px;">Matrix</h1>
 <div ng-if="inProgress" class="backgroundCover">
-    <div class="spinnerContainer">
-      <div class="thing"></div>
-      <div class="thing"></div>
-      <div class="thing"></div>
-      <div class="thing"></div>
-      <div class="thing"></div>
-      <div class="thing"></div>
-      <div class="thing"></div>
-      <div class="thing"></div>
-      <div class="thing"></div>
-      <div class="thing"></div>
-      <div class="thing"></div>
-      <div class="thing"></div>
+    <div class="loader">Loading...</div>
+    <div ng-if="saveProgress" class="center">
+        Your work is being saved and validated. This may take up to 30 seconds.
+        </br>
+        Please do not refresh or navigate away from this page.
+    </div>
+    <div ng-if="committProgress" class="center">
+        Your work is being committed. This may take up to a minute.
+        </br>
+        Please do not refresh or navigate away from this page.
+    </div>
+    <div ng-if="classifyProgress" class="center">
+        Your work is being classified. This may take a few minutes.
+        </br>
+        Please do not refresh or navigate away from this page.
     </div>
 </div>
 
@@ -24,7 +26,7 @@
             <input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000" />
             <div>
                 <label for="fileselect">Files to upload:</label>
-                <input type="file" id="fileselect" name="fileselect[]" multiple="multiple" />
+                <input type="file" accept="text/tab-separated-values" id="fileselect" name="fileselect[]" multiple="multiple" />
                 <div id="filedrag">or drop files here</div>
             </div>
             <div id="submitbutton">
@@ -42,31 +44,31 @@
                 <th ng-repeat="(key, value) in headers track by $index">{{value}}</th>
             </tr>
             <tr ng-repeat="item in results">
-                <td ng-class="retrieveClass('parentConceptID')" >
-                    <span tooltip="{{errors['parentConceptID']}}">{{item.ParentConceptID}}</span>
+                <td ng-class="retrieveClass('parentConceptID')" tooltip="{{errors['parentConceptID']}}" tooltip-append-to-body="true">
+                    <span >{{item.ParentConceptID}}</span>
                 </td>
-                <td ng-class="retrieveClass(value)" ng-repeat="(key, value) in unParsedHeaders track by $index">
-                    <span tooltip="{{errors[value]}}">{{item[value]}}</span>
+                <td ng-class="retrieveClass(value)" ng-repeat="(key, value) in unParsedHeaders track by $index" tooltip="{{errors[value]}}" tooltip-append-to-body="true">
+                    <span >{{item[value]}}</span>
                 </td>
             </tr>
     </table>
 </div>
 <div class="col-md-12 row">
     <button style="margin-right:10px" ng-disabled="!loaded" class="btn btn-primary col-md-2" ng-click="saveWork()">Save and Validate Work</button>
-    <button style="margin-right:10px" ng-disabled="!validationPassed && committed" class="btn btn-primary col-md-2" ng-click="commitWork()">Commit Work</button>
+    <button style="margin-right:10px" ng-disabled="!validationPassed && !committed" class="btn btn-primary col-md-2" ng-click="commitWork()">Commit Work</button>
     <button style="margin-right:10px" ng-disabled="!committed" class="btn btn-primary col-md-2" ng-click="classifyWork()">Classify Work</button>
 </div>
 <div class="col-md-12 row">
     <div ng-if="validationPassed">
-        Work Has been saved and Successfully passed Validation.    
+        Work has been saved and successfully passed validation.    
     </div>
     </br>
     <div ng-if="validationFailed">
-        Work Has been saved but failed Validation
+        Work has been saved but failed validation
     </div>
     </br>
     <div ng-if="committed">
-        Your work has been Committed. The Task Id is {{taskId}}    
+        Your work has been committed. The task id is {{taskId}}    
     </div>
     </br>
 </div>

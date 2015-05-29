@@ -125,12 +125,12 @@ angular.module( 'templateBasedAuthoring.matrix', [
             });
         });
     $scope.parseModel = function(model) {
-        for(var i = 0; i < model.attributeRestrictionGroups.length; i++)
+        for(var i = 0; i < model.attributes.length; i++)
         {
-            for(var j = 0; j < model.attributeRestrictionGroups[i].length; j++)
+            for(var j = 0; j < model.attributes[i].length; j++)
             {
-                $scope.headers.push(model.attributeRestrictionGroups[i][j].typeConceptId);
-                $scope.unParsedHeaders.push(model.attributeRestrictionGroups[i][j].typeConceptId);
+                $scope.headers.push(model.attributes[i][j].attribute);
+                $scope.unParsedHeaders.push(model.attributes[i][j].attribute);
             }
         }
         callServiceForEachItem();
@@ -177,6 +177,7 @@ angular.module( 'templateBasedAuthoring.matrix', [
     }
     $scope.saveWork = function(){
         $scope.inProgress = true;
+        $scope.saveProgress = true;
         $scope.save = false;
         if($scope.workId == null){
             MatrixService.saveWork($scope.templateName, $scope.work).then(function(data){
@@ -185,6 +186,7 @@ angular.module( 'templateBasedAuthoring.matrix', [
                 MatrixService.workValidation($scope.templateName, data.data.name).then(function(innerData){
                     $scope.validationErrors = innerData.data;
                     $scope.inProgress = false;
+                    $scope.saveProgress = false;
                     if(innerData.data.anyError === false)
                     {
                         $scope.validationFailed = false;
@@ -204,6 +206,7 @@ angular.module( 'templateBasedAuthoring.matrix', [
                 MatrixService.workValidation($scope.templateName, $scope.workId).then(function(innerData){
                     $scope.validationErrors = innerData.data;
                     $scope.inProgress = false;
+                    $scope.saveProgress = false;
                     if(innerData.data.anyError === false)
                     {
                         $scope.validationFailed = false;
@@ -224,12 +227,12 @@ angular.module( 'templateBasedAuthoring.matrix', [
     }
     
     $scope.renderErrors = function(){
-        if($scope.validationErrors.conceptResults[0].isARelationshipsMessages[0] != null)
+        if($scope.validationErrors.conceptResults[0].parentsMessages[0] != null)
         {
-            var parentError = $scope.validationErrors.conceptResults[0].isARelationshipsMessages[0];
+            var parentError = $scope.validationErrors.conceptResults[0].parentsMessages[0];
             $scope.errors.parentConceptID = parentError;
         }
-        var arrays = $scope.validationErrors.conceptResults[0].attributeGroupsMessages;
+        var arrays = $scope.validationErrors.conceptResults[0].attributesMessages;
         var merged = [];
         merged = merged.concat.apply(merged, arrays);
         for(var i = 0; i < $scope.objectOrder.length; i++)
@@ -253,14 +256,17 @@ angular.module( 'templateBasedAuthoring.matrix', [
     
     $scope.commitWork = function(){
         $scope.inProgress = true;
+        $scope.committProgress = true;
         MatrixService.commitWork($scope.templateName, $scope.workId).then(function(data){
             $scope.taskId = data.data.taskId;
             $scope.committed = true;
             $scope.inProgress = false;
+            $scope.committProgress = false;
         });
     };
     
     $scope.classifyWork = function(){
+        $scope.classifyProgress = true;
         $scope.inProgress = true;
         MatrixService.startClassification($scope.taskId).then(function(data){
             var location = data.headers('Location');
@@ -298,6 +304,7 @@ angular.module( 'templateBasedAuthoring.matrix', [
             });
         $scope.classified = true;
         $scope.inProgress = false;
+        $scope.classifyProgress = false;
     };
 
 	function Output(msg) {
@@ -367,11 +374,14 @@ angular.module( 'templateBasedAuthoring.matrix', [
         work.name = guid();
         work.taskId = "test";
         work.concepts = [];
-        var concept ={};
+        var concept = {};
+        var saveProgress = false;
+        var commitProgress = false;
+        var classifyProgress = false;
         concept.id = guid();
         concept.term = "test";
-        concept.isARelationships = [];
-        concept.attributeGroups = [];
+        concept.parents = [];
+        concept.attributes = [];
         var headers = $scope.unParsedHeaders;
         var temp = {}; 
         for(var j = 0; j < headers.length; j++)
@@ -381,11 +391,11 @@ angular.module( 'templateBasedAuthoring.matrix', [
                 temp[headers[j]] = "temp";
                 if(j == (headers.length -1))
                 {
-                    concept.attributeGroups.push(temp);   
+                    concept.attributes.push(temp);   
                 }
             }
             else{
-                concept.attributeGroups.push(temp);
+                concept.attributes.push(temp);
                 temp = {};
                 temp[headers[j]] = "temp";
             }
@@ -393,13 +403,13 @@ angular.module( 'templateBasedAuthoring.matrix', [
         for(var i = 0; i < input.length; i++){
           var obj = {};
           var currentLine = input[i];
-          if (concept.isARelationships.indexOf(currentLine.ParentConceptID) == -1) {
-              concept.isARelationships.push(currentLine.ParentConceptID);
+          if (concept.parents.indexOf(currentLine.ParentConceptID) == -1) {
+              concept.parents.push(currentLine.ParentConceptID);
           }
         }
         //Loop through groups and fill in variables
-        for(var k = 0; k < concept.attributeGroups.length; k++){
-            $scope.parseAttributes(concept.attributeGroups[k], input);
+        for(var k = 0; k < concept.attributes.length; k++){
+            $scope.parseAttributes(concept.attributes[k], input);
         }
         work.concepts.push(concept);
         $scope.work = work;

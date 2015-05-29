@@ -16,6 +16,9 @@ angular.module("createModel/createModel.tpl.html", []).run(["$templateCache", fu
     "   <span>\n" +
     "        <button class=\"btn btn-primary\" ng-click=\"loadLogicalModel()\">Load</button>\n" +
     "    </span>\n" +
+    "     <span>\n" +
+    "        <button class=\"btn btn-primary\" ng-click=\"clearLogicalModel()\">Clear</button>\n" +
+    "    </span>\n" +
     "    <span>\n" +
     "    <button class=\"btn btn-primary\" style=\"margin-right:10px;\"ng-click=\"saveLogicalModel()\">Save Logical Model</button>\n" +
     "     </span>\n" +
@@ -47,7 +50,10 @@ angular.module("createModel/createModel.tpl.html", []).run(["$templateCache", fu
     "   <span>\n" +
     "        <button class=\"btn btn-primary\" ng-click=\"loadLexicalModel()\">Load</button>\n" +
     "   </span>\n" +
-    "    <button class=\"btn btn-primary style=\"margin-right:10px;\"ng-click=\"saveLexicalModel()\">Save Lexical Model</button>\n" +
+    "    <span>\n" +
+    "        <button class=\"btn btn-primary\" ng-click=\"clearLexicalModel()\">Clear</button>\n" +
+    "    </span>\n" +
+    "    <button class=\"btn btn-primary\" style=\"margin-right:10px\" ng-click=\"saveLexicalModel()\">Save Lexical Model</button>\n" +
     "    <div class=\"col-md-2\" ng-show=\"lexicalSuccess\">Lexical Model Successfully Saved.</div>\n" +
     "</div>\n" +
     "<div class=\"col-md-12 row\">\n" +
@@ -69,19 +75,21 @@ angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($te
   $templateCache.put("matrix/matrix.tpl.html",
     "<h1 style=\"margin-left:15px;\">Matrix</h1>\n" +
     "<div ng-if=\"inProgress\" class=\"backgroundCover\">\n" +
-    "    <div class=\"spinnerContainer\">\n" +
-    "      <div class=\"thing\"></div>\n" +
-    "      <div class=\"thing\"></div>\n" +
-    "      <div class=\"thing\"></div>\n" +
-    "      <div class=\"thing\"></div>\n" +
-    "      <div class=\"thing\"></div>\n" +
-    "      <div class=\"thing\"></div>\n" +
-    "      <div class=\"thing\"></div>\n" +
-    "      <div class=\"thing\"></div>\n" +
-    "      <div class=\"thing\"></div>\n" +
-    "      <div class=\"thing\"></div>\n" +
-    "      <div class=\"thing\"></div>\n" +
-    "      <div class=\"thing\"></div>\n" +
+    "    <div class=\"loader\">Loading...</div>\n" +
+    "    <div ng-if=\"saveProgress\" class=\"center\">\n" +
+    "        Your work is being saved and validated. This may take up to 30 seconds.\n" +
+    "        </br>\n" +
+    "        Please do not refresh or navigate away from this page.\n" +
+    "    </div>\n" +
+    "    <div ng-if=\"committProgress\" class=\"center\">\n" +
+    "        Your work is being committed. This may take up to a minute.\n" +
+    "        </br>\n" +
+    "        Please do not refresh or navigate away from this page.\n" +
+    "    </div>\n" +
+    "    <div ng-if=\"classifyProgress\" class=\"center\">\n" +
+    "        Your work is being classified. This may take a few minutes.\n" +
+    "        </br>\n" +
+    "        Please do not refresh or navigate away from this page.\n" +
     "    </div>\n" +
     "</div>\n" +
     "\n" +
@@ -93,7 +101,7 @@ angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($te
     "            <input type=\"hidden\" id=\"MAX_FILE_SIZE\" name=\"MAX_FILE_SIZE\" value=\"300000\" />\n" +
     "            <div>\n" +
     "                <label for=\"fileselect\">Files to upload:</label>\n" +
-    "                <input type=\"file\" id=\"fileselect\" name=\"fileselect[]\" multiple=\"multiple\" />\n" +
+    "                <input type=\"file\" accept=\"text/tab-separated-values\" id=\"fileselect\" name=\"fileselect[]\" multiple=\"multiple\" />\n" +
     "                <div id=\"filedrag\">or drop files here</div>\n" +
     "            </div>\n" +
     "            <div id=\"submitbutton\">\n" +
@@ -111,31 +119,31 @@ angular.module("matrix/matrix.tpl.html", []).run(["$templateCache", function($te
     "                <th ng-repeat=\"(key, value) in headers track by $index\">{{value}}</th>\n" +
     "            </tr>\n" +
     "            <tr ng-repeat=\"item in results\">\n" +
-    "                <td ng-class=\"retrieveClass('parentConceptID')\" >\n" +
-    "                    <span tooltip=\"{{errors['parentConceptID']}}\">{{item.ParentConceptID}}</span>\n" +
+    "                <td ng-class=\"retrieveClass('parentConceptID')\" tooltip=\"{{errors['parentConceptID']}}\" tooltip-append-to-body=\"true\">\n" +
+    "                    <span >{{item.ParentConceptID}}</span>\n" +
     "                </td>\n" +
-    "                <td ng-class=\"retrieveClass(value)\" ng-repeat=\"(key, value) in unParsedHeaders track by $index\">\n" +
-    "                    <span tooltip=\"{{errors[value]}}\">{{item[value]}}</span>\n" +
+    "                <td ng-class=\"retrieveClass(value)\" ng-repeat=\"(key, value) in unParsedHeaders track by $index\" tooltip=\"{{errors[value]}}\" tooltip-append-to-body=\"true\">\n" +
+    "                    <span >{{item[value]}}</span>\n" +
     "                </td>\n" +
     "            </tr>\n" +
     "    </table>\n" +
     "</div>\n" +
     "<div class=\"col-md-12 row\">\n" +
     "    <button style=\"margin-right:10px\" ng-disabled=\"!loaded\" class=\"btn btn-primary col-md-2\" ng-click=\"saveWork()\">Save and Validate Work</button>\n" +
-    "    <button style=\"margin-right:10px\" ng-disabled=\"!validationPassed && committed\" class=\"btn btn-primary col-md-2\" ng-click=\"commitWork()\">Commit Work</button>\n" +
+    "    <button style=\"margin-right:10px\" ng-disabled=\"!validationPassed && !committed\" class=\"btn btn-primary col-md-2\" ng-click=\"commitWork()\">Commit Work</button>\n" +
     "    <button style=\"margin-right:10px\" ng-disabled=\"!committed\" class=\"btn btn-primary col-md-2\" ng-click=\"classifyWork()\">Classify Work</button>\n" +
     "</div>\n" +
     "<div class=\"col-md-12 row\">\n" +
     "    <div ng-if=\"validationPassed\">\n" +
-    "        Work Has been saved and Successfully passed Validation.    \n" +
+    "        Work has been saved and successfully passed validation.    \n" +
     "    </div>\n" +
     "    </br>\n" +
     "    <div ng-if=\"validationFailed\">\n" +
-    "        Work Has been saved but failed Validation\n" +
+    "        Work has been saved but failed validation\n" +
     "    </div>\n" +
     "    </br>\n" +
     "    <div ng-if=\"committed\">\n" +
-    "        Your work has been Committed. The Task Id is {{taskId}}    \n" +
+    "        Your work has been committed. The task id is {{taskId}}    \n" +
     "    </div>\n" +
     "    </br>\n" +
     "</div>\n" +

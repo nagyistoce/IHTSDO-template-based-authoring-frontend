@@ -69,6 +69,11 @@ angular.module( 'templateBasedAuthoring.createModel', [
                         return response;
                     });
             },
+        getTemplate: function (name) {
+                return $http.get(apiEndpoint +'templates/' + name).then(function(response) {
+                        return response;
+                    });
+        },
         saveTemplate: function (lexicalModelName, logicalModelName, name) {
                 var json = {};
                 json.name = name;
@@ -98,6 +103,18 @@ angular.module( 'templateBasedAuthoring.createModel', [
     $scope.lexicallSuccess = false;
     $scope.lexicalJsonData = {};
 
+    //Initial load check to see if models have allready been loaded.
+    if(sharedVariablesService.getTemplateName() !== '')
+    {
+        ModelService.getTemplate(sharedVariablesService.getTemplateName()).then(function(data) {
+            ModelService.getLogicalModel(data.data.logicalModelName).then(function(innerData) {
+                $scope.logicalJsonData = innerData.data;
+            });
+            ModelService.getLexicalModel(data.data.lexicalModelName).then(function(innerData) {
+                $scope.lexicalJsonData = innerData.data;
+            });
+        });
+    }
     //Logical Functions
     $scope.$watch('logicalJsonData', function(json) {
         $scope.logicalJsonString = $filter('json')(json);
@@ -140,6 +157,7 @@ angular.module( 'templateBasedAuthoring.createModel', [
         } catch(e) {
             $scope.lexicalWellFormed = false;
         }
+        
     }, true);
     
     ModelService.getLexicalModelList().then(function(data) {
@@ -156,6 +174,12 @@ angular.module( 'templateBasedAuthoring.createModel', [
             //sharedVariablesService.setTemplateName($scope.lexicalModelToLoad);
         });
     };
+    $scope.clearLexicalModel = function() {
+            $scope.lexicalJsonData = {};
+    };
+    $scope.clearLogicalModel = function() {
+            $scope.logicalJsonData = {};
+    };
     
     function guid() {
       function s4() {
@@ -167,8 +191,7 @@ angular.module( 'templateBasedAuthoring.createModel', [
         s4() + '-' + s4() + s4() + s4();
     }
     $scope.generateMatrix = function() {
-        
-        ModelService.saveTemplate($scope.lexicalJsonData.name, $scope.logicalJsonData.name, "Test");
+        ModelService.saveTemplate($scope.lexicalJsonData.modelName, $scope.logicalJsonData.modelName, "Test");
         sharedVariablesService.setTemplateName("Test");
         $location.path('/matrix');
     };
