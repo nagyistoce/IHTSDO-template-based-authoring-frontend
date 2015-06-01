@@ -11,38 +11,35 @@ angular.module( 'templateBasedAuthoring', [
 ])
 
 .config( function myAppConfig ( $stateProvider, $urlRouterProvider, $locationProvider, $provide) {
-    var endpoint = "https://dev-ims.ihtsdotools.org/";
-    var refferer = "https://dev-term.ihtsdotools.org/authoring/";
+    // TODO: Move imsUrl into configuration.
+    var imsUrl = 'https://dev-ims.ihtsdotools.org/#/';
+    var imsUrlParams = '?serviceReferrer=' + window.location.href;
     $provide.decorator('$sniffer', function($delegate) {
       $delegate.history = false;
       return $delegate;
     });
-    $urlRouterProvider
-        .otherwise('/createModel');
     $stateProvider
     .state('login', {
-        url: endpoint + "/#/login" + "?serviceReferer=" + refferer
+        url: 'login'
     })
     .state('logout', {
-        url: endpoint + "/#/logout" + "?serviceReferer=" + refferer
+        url: 'logout'
     })
     .state('settings', {
-        url: endpoint + "/#/settings" + "?serviceReferer=" + refferer
+        url: 'settings'
     })
     .state('register', {
-        url: endpoint + "/#/register" + "?serviceReferer=" + refferer
+        url: 'register'
     });
-    $locationProvider.html5Mode(true);
-//    .when('/logout', {
-//        redirectTo: function(){ window.location = endpoint + "/#/logout";}
-//      })
-//    .when('/settings', {
-//        redirectTo: function(){ window.location = endpoint + "/#/settings";}
-//      })
-//    .when('/register', {
-//        redirectTo: function(){ window.location = endpoint + "/#/register";}
-//      })
-    //.otherwise({ url: '/createModel' });
+    $urlRouterProvider
+        .when('/login', function() { window.location = imsUrl + 'login' + imsUrlParams;})
+        .when('/logout', function() { window.location = imsUrl + 'logout' + imsUrlParams;})
+        .when('/settings', function() { window.location = imsUrl + 'settings' + imsUrlParams;})
+        .when('/register', function() { window.location = imsUrl + 'register' + imsUrlParams;})
+        .otherwise('/createModel');
+
+    // This not working when app is not at the root of the domain
+    //$locationProvider.html5Mode(true);
 })
 
 .run( function run () {
