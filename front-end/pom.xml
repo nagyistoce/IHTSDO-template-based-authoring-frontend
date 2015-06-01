@@ -24,38 +24,33 @@
 				<version>1.2.1</version>
 				<executions>
 					<execution>
+						<id>grunt</id>
 						<phase>prepare-package</phase>
 						<goals>
 							<goal>exec</goal>
 						</goals>
+						<configuration>
+							<executable>grunt</executable>
+							<arguments>
+								<argument>--force</argument>
+								<argument>--skip-tests=true</argument>
+							</arguments>
+						</configuration>
 					</execution>
-				</executions>
-				<configuration>
-					<executable>grunt</executable>
-					<arguments>
-						<argument>--force</argument>
-						<argument>--skip-tests=true</argument>
-					</arguments>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.2.1</version>
-				<executions>
 					<execution>
+						<id>npm</id>
 						<phase>generate-sources</phase>
 						<goals>
 							<goal>exec</goal>
 						</goals>
+						<configuration>
+							<executable>npm</executable>
+							<arguments>
+								<argument>install</argument>
+							</arguments>
+						</configuration>
 					</execution>
 				</executions>
-				<configuration>
-					<executable>npm</executable>
-					<arguments>
-						<argument>install</argument>
-					</arguments>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.vafer</groupId>
