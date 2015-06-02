@@ -1,18 +1,13 @@
 angular.module( 'templateBasedAuthoring.matrix', [
-  'ui.router', 'ui.bootstrap'
+  'ngRoute', 'ui.bootstrap'
 ])
 
-.config(function config( $stateProvider ) {
-  $stateProvider.state( 'matrix', {
-    url: '/matrix',
-    views: {
-      "main": {
-        controller: 'MatrixCtrl',
-        templateUrl: 'matrix/matrix.tpl.html'
-      }
-    },
-    data:{ pageTitle: 'Matrix' }
-  });
+.config(function ( $routeProvider ) {
+  $routeProvider
+      .when('/matrix', {
+            controller: 'MatrixCtrl',
+            templateUrl: 'matrix/matrix.tpl.html'
+          });
 })
 
 .filter('prettyJSON', function () {
@@ -330,6 +325,14 @@ angular.module( 'templateBasedAuthoring.matrix', [
 	}
 
 	function ParseFile(file) {
+        $scope.saved = false;
+        $scope.work = {};
+        $scope.validationPassed = false;
+        $scope.validationFailed = false;
+        $scope.errors = {};
+        $scope.objectOrder = [];
+        $scope.inProgress = false;
+        $scope.workId = null;
         var reader = new FileReader();
         reader.onload = function(e) {
             $scope.results = $scope.tsvJSON(e.target.result);
