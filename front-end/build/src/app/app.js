@@ -13,10 +13,12 @@ angular.module( 'templateBasedAuthoring', [
 .config( ["$routeProvider", "$locationProvider", function ($routeProvider, $locationProvider) {
     // TODO: Move imsUrl into configuration.
     var imsUrl = 'https://dev-ims.ihtsdotools.org/#/';
+    console.log(window.location.href);
+    console.log(escape(window.location.href));
     var imsUrlParams = '?serviceReferrer=' + window.location.href;
     $routeProvider
         .when('/login', {
-            redirectTo: function(){ window.location = imsUrl + 'login' + imsUrlParams;}
+            redirectTo: function(){ window.location = decodeURIComponent(imsUrl + 'login' + imsUrlParams);}
           })
         .when('/logout', {
             redirectTo: function(){ window.location = imsUrl + 'logout' + imsUrlParams;}
