@@ -325,6 +325,14 @@ angular.module( 'templateBasedAuthoring.matrix', [
 	}
 
 	function ParseFile(file) {
+        $scope.saved = false;
+        $scope.work = {};
+        $scope.validationPassed = false;
+        $scope.validationFailed = false;
+        $scope.errors = {};
+        $scope.objectOrder = [];
+        $scope.inProgress = false;
+        $scope.workId = null;
         var reader = new FileReader();
         reader.onload = function(e) {
             $scope.results = $scope.tsvJSON(e.target.result);
