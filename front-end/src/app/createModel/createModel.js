@@ -123,10 +123,10 @@ angular.module( 'templateBasedAuthoring.createModel', [
             $scope.logicalWellFormed = false;
         }
     }, true);
-    
-    ModelService.getLogicalModelList().then(function(data) {
-            $scope.logicalModels = data.data;
-        });
+
+    //ModelService.getLogicalModelList().then(function(data) {
+    //        $scope.logicalModels = data.data;
+    //    });
     $scope.saveLogicalModel = function() {
         ModelService.saveLogicalModel($scope.logicalJsonData).then(function(data) {
             //sharedVariablesService.setTemplateName($scope.logicalJsonData.name);
@@ -139,8 +139,30 @@ angular.module( 'templateBasedAuthoring.createModel', [
             //sharedVariablesService.setTemplateName($scope.logicalModelToLoad);
         });
     };
-    
-    //Lexical Functions
+    $scope.addLogicalModelIsA = function() {
+        $scope.logicalJsonData.isARestrictions.push({conceptId: '', rangeRelationType: 'DESCENDANTS'});
+    };
+    $scope.removeLogicalModelIsA = function(isAToRemove) {
+        var isARestrictions = [];
+        $scope.logicalJsonData.isARestrictions.forEach(function(isA) {
+            if (isA !=  isAToRemove) {
+                isARestrictions.push(isA);
+            }
+        });
+        $scope.logicalJsonData.isARestrictions = isARestrictions;
+    };
+    $scope.removeLogicalModelAttribute = function(targetGroup, attributeToRemove) {
+        $scope.logicalJsonData.attributeRestrictionGroups.forEach(function(group) {
+            if (group == targetGroup) {
+
+            }
+        })
+    };
+
+    $scope.logicalModelToLoad = 'test-logical-model';
+    $scope.loadLogicalModel();
+
+        //Lexical Functions
     $scope.$watch('lexicalJsonData', function(json) {
         $scope.lexicalJsonString = $filter('json')(json);
     }, true);

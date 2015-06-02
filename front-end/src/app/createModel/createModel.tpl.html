@@ -26,8 +26,96 @@
         <textarea class="col-md-12" style="height:300px" id="logicalJsonTextarea" ng-model="logicalJsonString"></textarea>
         <span class="red" ng-if="!logicalWellFormed">JSON is invalid</span>
     </div>
-    <div class="jsonView col-md-6">
-        <json child="logicalJsonData" default-collapsed="false" type="object"></json>
+    <div class="col-md-6">
+        <form>
+            <div class="row">
+                <div class="col-md-3">
+                    Name
+                </div>
+                <div class="col-md-3">
+                    <input ng-model="logicalJsonData.name"></div>
+                </div>
+            <div class="row">
+                <div class="col-md-3">
+                    Domain Name
+                </div>
+                <div class="col-md-3">
+                    <input ng-model="logicalJsonData.domainName"></div>
+                </div>
+            <div class="row">
+                <div class="col-md-3">
+                    Definition Status
+                </div>
+                <div class="col-md-3">
+                    <select ng-model="logicalJsonData.definitionStatus">
+                        <option>FULLY_DEFINED</option>
+                        <option>PRIMITIVE</option>
+                    </select>
+                </div>
+            </div>
+            <div style="border: solid 1px black; padding: 0 10px 10px 10px; margin: 10px;" ng-repeat="isA in logicalJsonData.isARestrictions">
+				<h4>Is A</h4>
+				<div class="row">
+					<div class="col-md-3">
+						IsA
+					</div>
+					<div class="col-md-3">
+						<input ng-model="isA.conceptId">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3">
+						Range
+					</div>
+					<div class="col-md-3">
+						<select ng-model="isA.rangeRelationType">
+							<option>SELF</option>
+							<option>DESCENDANTS</option>
+							<option>DESCENDANTS_AND_SELF</option>
+						</select>
+					</div>
+				</div>
+				<button class="btn btn-primary" ng-click="removeLogicalModelIsA(isA)">Remove IsA</button>
+			</div>
+			<button class="btn btn-primary" ng-click="addLogicalModelIsA()">Add IsA</button>
+			<div ng-repeat="group in logicalJsonData.attributeRestrictionGroups" style="border: solid 1px black; padding: 0 10px 10px 10px; margin: 10px;">
+				<h4>Attribute Group</h4>
+				<div ng-repeat="attribute in group">
+					Attribute
+					<div class="row">
+						<div class="col-md-3">
+							Type
+						</div>
+						<div class="col-md-3">
+							<input ng-model="attribute.typeConceptId">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3">
+							Range Concept
+						</div>
+						<div class="col-md-3">
+							<input ng-model="attribute.rangeConceptId">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3">
+							Range Type
+						</div>
+						<div class="col-md-3">
+							<select ng-model="attribute.rangeRelationType">
+								<option>SELF</option>
+								<option>DESCENDANTS</option>
+								<option>DESCENDANTS_AND_SELF</option>
+							</select>
+						</div>
+					</div>
+					<button class="btn btn-primary" ng-click="removeLogicalModelAttribute(group, attribute)">Remove Attribute</button>
+				</div>
+				<button class="btn btn-primary" ng-click="addLogicalModelAttribute(group)">Add Attribute to Group</button>
+			</div>
+		</form>
+        <!--<json child="logicalJsonData" default-collapsed="false" type="object"></json>-->
     </div>
 </div>
 
