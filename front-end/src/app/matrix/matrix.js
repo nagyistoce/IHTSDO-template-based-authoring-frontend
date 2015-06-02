@@ -1,18 +1,13 @@
 angular.module( 'templateBasedAuthoring.matrix', [
-  'ui.router', 'ui.bootstrap'
+  'ngRoute', 'ui.bootstrap'
 ])
 
-.config(function config( $stateProvider ) {
-  $stateProvider.state( 'matrix', {
-    url: '/matrix',
-    views: {
-      "main": {
-        controller: 'MatrixCtrl',
-        templateUrl: 'matrix/matrix.tpl.html'
-      }
-    },
-    data:{ pageTitle: 'Matrix' }
-  });
+.config(function ( $routeProvider ) {
+  $routeProvider
+      .when('/matrix', {
+            controller: 'MatrixCtrl',
+            templateUrl: 'matrix/matrix.tpl.html'
+          });
 })
 
 .filter('prettyJSON', function () {

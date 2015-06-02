@@ -1,18 +1,13 @@
 angular.module( 'templateBasedAuthoring.createModel', [
-  'ui.router', 'JSONedit'
+  'ngRoute', 'JSONedit'
 ])
 
-.config(function config( $stateProvider ) {
-  $stateProvider.state( 'createModel', {
-    url: '/createModel',
-    views: {
-      "main": {
+.config(function ( $routeProvider ) {
+  $routeProvider
+    .when('/createModel', {
         controller: 'CreateModelCtrl',
         templateUrl: 'createModel/createModel.tpl.html'
-      }
-    },
-    data:{ pageTitle: 'Create Model' }
-  });
+      });
 })
 
 .service('ModelService', ['$http', function ($http) {

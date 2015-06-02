@@ -7,39 +7,29 @@ angular.module( 'templateBasedAuthoring', [
     'templateBasedAuthoring.snowowlService',
     'templateBasedAuthoring.conceptNameFilter',
     'templateBasedAuthoring.accountService',
-    'ui.router'
+    'ngRoute'
 ])
 
-.config( function myAppConfig ( $stateProvider, $urlRouterProvider, $locationProvider, $provide) {
+.config( function ($routeProvider, $locationProvider) {
     // TODO: Move imsUrl into configuration.
     var imsUrl = 'https://dev-ims.ihtsdotools.org/#/';
     var imsUrlParams = '?serviceReferrer=' + window.location.href;
-    $provide.decorator('$sniffer', function($delegate) {
-      $delegate.history = false;
-      return $delegate;
-    });
-    $stateProvider
-    .state('login', {
-        url: 'login'
-    })
-    .state('logout', {
-        url: 'logout'
-    })
-    .state('settings', {
-        url: 'settings'
-    })
-    .state('register', {
-        url: 'register'
-    });
-    $urlRouterProvider
-        .when('/login', function() { window.location = imsUrl + 'login' + imsUrlParams;})
-        .when('/logout', function() { window.location = imsUrl + 'logout' + imsUrlParams;})
-        .when('/settings', function() { window.location = imsUrl + 'settings' + imsUrlParams;})
-        .when('/register', function() { window.location = imsUrl + 'register' + imsUrlParams;})
-        .otherwise('/createModel');
-
-    // This not working when app is not at the root of the domain
-    //$locationProvider.html5Mode(true);
+    $routeProvider
+        .when('/login', {
+            redirectTo: function(){ window.location = imsUrl + 'login' + imsUrlParams;}
+          })
+        .when('/logout', {
+            redirectTo: function(){ window.location = imsUrl + 'logout' + imsUrlParams;}
+          })
+        .when('/settings', {
+            redirectTo: function(){ window.location = imsUrl + 'settings' + imsUrlParams;}
+          })
+        .when('/register', {
+            redirectTo: function(){ window.location = imsUrl + 'register' + imsUrlParams;}
+          })
+        .otherwise({
+            redirectTo: '/createModel'
+        });
 })
 
 .run( function run () {
