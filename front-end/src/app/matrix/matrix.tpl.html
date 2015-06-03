@@ -20,11 +20,13 @@
 
 
 <div class="col-md-12 row">
+<!--
     <select ng-model="taskToLoad">
         <option>Load previously committed work</option>
         <option ng-repeat="item in taskList" value="{{item.taskId}}">{{item.taskId}}</option>
     </select>
     <button class="btn btn-primary" ng-click="loadWork()">Load</button>
+-->
     <form id="upload" onsubmit="init()" method="POST" enctype="multipart/form-data">
         <fieldset>
             <legend>.TSV Upload</legend>

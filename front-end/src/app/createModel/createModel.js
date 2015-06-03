@@ -186,9 +186,11 @@ angular.module( 'templateBasedAuthoring.createModel', [
         s4() + '-' + s4() + s4() + s4();
     }
     $scope.generateMatrix = function() {
-        var templateName = guid();
-        ModelService.saveTemplate($scope.lexicalJsonData.modelName, $scope.logicalJsonData.modelName, templateName);
-        sharedVariablesService.setTemplateName(templateName);
+//        var templateName = guid();
+//        ModelService.saveTemplate($scope.lexicalJsonData.modelName, $scope.logicalJsonData.modelName, templateName);
+//        sharedVariablesService.setTemplateName(templateName);
+        ModelService.saveTemplate($scope.lexicalJsonData.modelName, $scope.logicalJsonData.modelName, "Test");
+        sharedVariablesService.setTemplateName("Test");
         $location.path('/matrix');
     };
 }]);

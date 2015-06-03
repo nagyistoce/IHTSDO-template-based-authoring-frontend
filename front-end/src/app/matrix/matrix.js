@@ -132,9 +132,9 @@ angular.module( 'templateBasedAuthoring.matrix', [
             MatrixService.getLogicalModel(data.data.logicalModelName).then(function(innerData) {
                 $scope.model = innerData.data;
                 $scope.parseModel($scope.model);
-                MatrixService.getWorkList().then(function(data) {
-                    $scope.taskList = data.data.items;
-                });
+//                MatrixService.getWorkList().then(function(data) {
+//                    $scope.taskList = data.data.items;
+//                });
             });
         });
     
