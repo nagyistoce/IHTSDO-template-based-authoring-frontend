@@ -12,7 +12,7 @@ angular.module( 'templateBasedAuthoring.matrix', [
 
 .filter('prettyJSON', function () {
     function syntaxHighlight(json) {
-      return JSON ? JSON.stringify(json, null, '  ') : 'your browser doesnt support JSON so cant pretty print';
+      return JSON ? JSON.stringify(json, null, '  ') : "Your browser doesnt support JSON and so can't pretty print";
     }
     return syntaxHighlight;
 })
@@ -31,6 +31,11 @@ angular.module( 'templateBasedAuthoring.matrix', [
                         return response;
                     });
         },
+        getTaskList: function () {
+                return $http.get(snowowlEndpoint +'MAIN/tasks').then(function(response) {
+                        return response;
+                    });
+            },
         getLogicalModel: function (logicalModelName) {
                 return $http.get(apiEndpoint +'models/logical/' + logicalModelName).then(function(response) {
                         return response;
@@ -48,6 +53,11 @@ angular.module( 'templateBasedAuthoring.matrix', [
                         return response;
                     });
             },
+        getWorkList: function (templateName) {
+                return $http.get(apiEndpoint +'templates/' + templateName + '/work').then(function(response) {
+                        return response;
+                    });
+            },
         updateWork: function (templateName, work, workId) {
                 return $http.put(apiEndpoint +'templates/' + templateName + '/work/' + workId, work, {
                         headers: { 'Content-Type': 'application/json; charset=UTF-8'}
@@ -57,6 +67,11 @@ angular.module( 'templateBasedAuthoring.matrix', [
             },
         commitWork: function (templateName, workId) {
                 return $http.post(apiEndpoint + 'templates/' + templateName + '/work/' + workId + '/commit').then(function(response) {
+                        return response;
+                    });
+            },
+        loadWork: function (templateName, workId) {
+                return $http.get(apiEndpoint + 'templates/' + templateName + '/work/' + workId).then(function(response) {
                         return response;
                     });
             },
@@ -117,8 +132,12 @@ angular.module( 'templateBasedAuthoring.matrix', [
             MatrixService.getLogicalModel(data.data.logicalModelName).then(function(innerData) {
                 $scope.model = innerData.data;
                 $scope.parseModel($scope.model);
+                MatrixService.getWorkList().then(function(data) {
+                    $scope.taskList = data.data.items;
+                });
             });
         });
+    
     $scope.parseModel = function(model) {
         for(var i = 0; i < model.attributes.length; i++)
         {
@@ -159,6 +178,12 @@ angular.module( 'templateBasedAuthoring.matrix', [
                     return data.data.preferredSynonym;
                 });
       };
+    };
+    $scope.loadTask = function() {
+        MatrixService.loadWork($scope.templateName, $scope.taskToLoad).then(function(data) {
+            $scope.loadedWork = data.data;
+            console.log($scope.loaded);
+        });
     };
     
     function guid() {
