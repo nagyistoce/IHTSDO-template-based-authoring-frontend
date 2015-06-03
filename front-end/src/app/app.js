@@ -10,12 +10,13 @@ angular.module( 'templateBasedAuthoring', [
     'ngRoute'
 ])
 
+
 .config( function ($routeProvider, $locationProvider) {
     // TODO: Move imsUrl into configuration.
     var imsUrl = 'https://dev-ims.ihtsdotools.org/#/';
     console.log(window.location.href);
     console.log(escape(window.location.href));
-    var imsUrlParams = '?serviceReferrer=' + window.location.href;
+    var imsUrlParams = '?serviceReferer=' + window.location.href;
     $routeProvider
         .when('/login', {
             redirectTo: function(){ window.location = decodeURIComponent(imsUrl + 'login' + imsUrlParams);}
